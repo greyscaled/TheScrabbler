@@ -20,6 +20,26 @@ function Model(){
 }
 
 function View(){
+	var width =100;
+	var height =80;
+	var canvasID = document.getElementById('canvas');
+	var ctx = canvasID.getContext('2d');
+
+	// how to draw to the canvas
+	for(var i=0;i<GRID;i++){
+	ctx.strokeStyle = "blue";	 
+	ctx.fillStyle = "red";		
+	ctx.beginPath();	// have to have this begin path thing
+	
+	ctx.lineWidth = 2;
+	ctx.rect(100+ width*i,50+ width*i,width,width);
+	//ctx.lineTo(100+width*i,500);
+	ctx.closePath();
+
+	ctx.fill();
+	ctx.stroke(); 
+}
+	//
 
 	/*
 	How to call a function (class) within a function
