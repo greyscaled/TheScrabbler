@@ -6,6 +6,7 @@ var COLUMNS = 7;
 //==================MODEL CLASS=====================================
 function Model(){
 	// Local Variables
+	// testest
 	var grid = initGrid(ROWS, COLUMNS); // calls with global vars
 
 	// Fields
