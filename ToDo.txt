@@ -1,0 +1,9 @@
+Meetings:
+-18th
+-23rd
+--> recurrence: every Mon, Wed, Fri
+
+-Milestones (Agile development)
+	#0 = Figure out The Preliminary Detauls
+	#1 = Grid GUI (Tuesday 24th)
+	#2 = Requirements Finished (Friday 28th)
