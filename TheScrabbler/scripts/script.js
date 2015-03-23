@@ -9,7 +9,7 @@ function Model(){
 	var grid = initGrid(ROWS, COLUMNS); // calls with global vars
 
 	// Fields
-	this.grid = grid;  
+	this.grid = grid;   
 
 	// Public Methods  
 
