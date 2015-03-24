@@ -66,9 +66,10 @@ function Controller(){
 
 		// rel_x and rel_y are the grid coordinates starting from (0,0) bottom left
 		var rel_x = Math.floor(((x_Pos - canvasSize.left)/(deltaX)));
-		var rel_y = Math.floor(((y_Pos + canvasSize.top)/(deltaY)));
+		var rel_y = Math.floor(((y_Pos - canvasSize.top)/(deltaY)));
 		return {x:rel_x,
-			y:rel_y};	
+			    y:rel_y
+			   };	
 	}
 
 	
@@ -100,10 +101,10 @@ function View(canvasID){
 		}
 	}
 
-	this.addLetter = function (letter, row, column) {
+	this.addLetter = function (letter, x, y) {
 		ctx.fillStyle="black";
 		ctx.font="25px Georgia";
-		ctx.fillText(letter,15+(row*50),35+(column*50));
+		ctx.fillText(letter,(15+(x*50)),35+(y*50));
 	};
 
 
