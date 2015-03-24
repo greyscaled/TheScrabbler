@@ -6,7 +6,6 @@ var COLUMNS = 7;
 //==================MODEL CLASS=====================================
 function Model(){
 	// Local Variables
-	// testest
 	var grid = initGrid(ROWS, COLUMNS); // calls with global vars
 
 	// Fields
@@ -24,7 +23,7 @@ function Model(){
 		for (var i = 0; i < rows; i++) {
 			var row = [];
 			for (var j = 0; j < columns; j++) {
-				row.push("h");
+				row.push("");
 			}
 			grid.push(row);
 		}
