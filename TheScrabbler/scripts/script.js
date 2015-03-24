@@ -40,18 +40,31 @@ function Model(){
 
 
 function Controller(){
+	// Static Variables
 	var canvasID = document.getElementById('canvas');
-	canvasID.addEventListener("click",nextState,false);
 	var view = new View(canvasID);
-	//view(canvasID);
-	Model();
-
-
+	var model = new Model();
+	canvasID.addEventListener("click",nextState,false);
+	
+	// Static Methods
 	function nextState(e){
 		var x_Pos = e.clientX;
 		var y_Pos = e.clientY;
 		var position = normalize(x_Pos,y_Pos);
 		console.log(position.x+","+position.y);
+
+		// will be moved to its own function in due time.
+		// quick and dirty check to see if they entered exactly 1 char
+		// TODO: check if a-->z
+		var letter = prompt("Enter a letter");
+		console.log(letter.length);
+		if (letter != "" || letter != null) {  // cancel returns null
+			if (letter.length == 1) {
+				view.addLetter(letter,position.x, position.y);
+			} else {
+				window.alert("please select a valid letter");
+			}
+		}
 	}
 
 	function normalize(x_Pos,y_Pos){
@@ -63,13 +76,13 @@ function Controller(){
 
 		// rel_x and rel_y are the grid coordinates starting from (0,0) bottom left
 		var rel_x = Math.floor(((x_Pos - canvasSize.left)/(deltaX)));
-		var rel_y = Math.floor(((y_Pos + canvasSize.top)/(deltaY)));
+		var rel_y = Math.floor(((y_Pos - canvasSize.top)/(deltaY)));
 		return {x:rel_x,
-			y:rel_y};	
+			    y:rel_y
+			   };	
 	}
 
-	var letter = prompt("Enter a letter");
-	view.addLetter(letter,1, 1);
+	
 
 
 } // end of Controller class
@@ -98,13 +111,12 @@ function View(canvasID){
 		}
 	}
 
-	this.addLetter = function (letter, row, column) {
+	this.addLetter = function (letter, x, y) {
 		ctx.fillStyle="black";
 		ctx.font="25px Georgia";
-		ctx.fillText(letter,15*row,35*column);
+		ctx.fillText(letter,(15+(x*50)),35+(y*50));
 	};
 
 
 } // end of View Class
-
 
