@@ -30,6 +30,7 @@ function Model(){
 		return grid;
 	};
 
+
 	//console.table(grid);  (TESTING)
 
 } // end of class
@@ -56,10 +57,11 @@ function Controller(){
 		// quick and dirty check to see if they entered exactly 1 char
 		// TODO: check if a-->z
 		var letter = prompt("Enter a letter");
-		console.log(letter.length);
 		if (letter != "" || letter != null) {  // cancel returns null
 			if (letter.length == 1) {
 				view.addLetter(letter,position.x, position.y);
+				model.grid[position.y][position.x] = letter; // note: opposite
+				console.table(model.grid); // TESTING
 			} else {
 				window.alert("please select a valid letter");
 			}
