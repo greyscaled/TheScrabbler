@@ -4,6 +4,17 @@ Meetings:
 --> recurrence: every Mon, Wed, Fri
 
 -Milestones (Agile development)
-	#0 = Figure out The Preliminary Detauls
+	#0 = Figure out The Preliminary Details
 	#1 = Grid GUI (Tuesday 24th)
+		1.1 - Setup gride prototype [DONE]
+		1.2 - Make grid responsive [DONE]
+		1.3 - Back-end Data Arrays
 	#2 = Requirements Finished (Friday 28th)
+	#3 = Hashing Function
+	#4 = Controller State Machine
+		-Initialization
+		-Scoring Tiles
+		-Input play tiles
+	#5 = Protoype working for just scoring tiles
+	#6 = Finished Prototype
+	#7 = Polish The product
