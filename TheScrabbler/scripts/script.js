@@ -98,7 +98,7 @@ function View(canvasID){
 		}
 	}
 
-	function addLetter(letter, row, column){
+	this.addLetter = function (letter, row, column) {
 		ctx.fillStyle="black";
 		ctx.font="25px Georgia";
 		ctx.fillText(letter,15*row,35*column);
