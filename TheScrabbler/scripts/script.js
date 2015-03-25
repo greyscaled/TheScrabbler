@@ -57,11 +57,15 @@ function Controller(){
 		// quick and dirty check to see if they entered exactly 1 char
 		// TODO: check if a-->z
 		var letter = prompt("Enter a letter");
+		var capLetters = /[A-Z]/;		// creating a regular expression and setting it to
+										// a var. This regex means from A-Z it is true
 		if (letter != "" || letter != null) {  // cancel returns null
-			if (letter.length == 1) {
-				view.addLetter(letter,position.x, position.y);
-				model.grid[position.y][position.x] = letter; // note: opposite
-				console.table(model.grid); // TESTING
+			if (letter.match(capLetters)){		//If the value has a A-Z in it return true
+				if (letter.length == 1) {
+					view.addLetter(letter,position.x, position.y);
+					model.grid[position.y][position.x] = letter; // note: opposite
+					console.table(model.grid); // TESTING
+				}
 			} else {
 				window.alert("please select a valid letter");
 			}
