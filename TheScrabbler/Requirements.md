@@ -1,13 +1,13 @@
 #Requirements
 
-This project's target audience is for people who cannot think of the proper move to make in this game; it will be a great benifit to people who wish too improve their vocabulary, this aplication will give them sugestions often that that the user may not think of. This can also be used too see if a game is able to be won given a certain game state.
+This project's target audience is for people who cannot think of the proper move to make in this game; it will be a great benifit to people who wish to improve their vocabulary, this aplication will often give them sugestions that the user may not think of. This can also be used too see if a game is able to be won given a certain game state.
 
 #Functional Requirements
 for all.{sigma = {x1...x7} | max(scrabble_points(sigma*|sigma is an element of English Dictionary))}
 
-1. The application will allow input game information
+1. The application will allow input game information:
   * Allowing the user to enter in the current game board
-  * Allowing the user to enter in the current pieces one has
+  * Allowing the user to enter in the current pieces one has in their current game state
 2. The app shall have the following states:
   * Accepting input of existing letters
   * Waiting for a selection area on the grid
@@ -16,7 +16,7 @@ for all.{sigma = {x1...x7} | max(scrabble_points(sigma*|sigma is an element of E
 3. The app shall abide by Scrabble rules, specifically:
   * Every sequence of adjacent letters forms a valid word
   * Scoring is the combined result of tile values and special board squares
-4. Placing new letters will not replace any previous ones
+4. Placing new letters will not replace any previous ones:
   * Selecting different word choices will not effect the current state of the grid
 
 #Non Functional Requirements
@@ -37,5 +37,5 @@ for all.{sigma = {x1...x7} | max(scrabble_points(sigma*|sigma is an element of E
 #Software Verifcation and Maintence
 1. Verification will be preformed in the following steps
   *creating the basic user interface and ensuring using canoical sequences to ensure that every event will go to the proper state
-  *modual testing will be done using function tables to ensure the proper result, given a finite input
+  *module testing will be done using function tables to ensure the proper result, given a finite input
   *bottom up testing will be preformed testing smaller methods that do not use anything then testing the larger methodes which use these small applications
