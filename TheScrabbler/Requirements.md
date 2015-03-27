@@ -1,3 +1,12 @@
+Definition: A requirements specification is an agreemnt between the end user and the system developer.  It defines exeternal behaviour.    
+
+To do:
+ * Domain: Identifying Stakeholders as well as User's requirements 
+ * System Requirements - Safety, Utility (see nonfunctional)
+ * Functional requirements: (UML is common) --> describe what the product does using a mixture of informal, semi-formal and formal notations
+ * Nonfunctional - Relability accuracy, performance, human-computer interface, operating constraints, physical constraints, portability issues etc etc.
+ * Development and maintenance - Quality control, system test procedures, likely changes to system maintenance etc.
+
 #Requirements
 
 This project's target audience is for people who cannot think of the proper move to make in this game; it will be a great benifit to people who wish to improve their vocabulary, this aplication will often give them sugestions that the user may not think of. This can also be used too see if a game is able to be won given a certain game state.
