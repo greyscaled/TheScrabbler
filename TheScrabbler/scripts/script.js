@@ -44,6 +44,7 @@ function Controller(){
 	// Static Variables
 	var canvasID = document.getElementById('canvas');
 	var nextButton = document.getElementById("nextbtn");
+	var backButton = document.getElementById("backbtn");
 	var view = new View(canvasID);
 	var model = new Model();
 	var state = "letters";
@@ -51,7 +52,7 @@ function Controller(){
 	// Event Listeners
 	canvasID.addEventListener("click",onGridClick,false);
 	nextButton.addEventListener("click",onNextClick,false);
-
+	backButton.addEventListener("click",onBackClick,false);
 	
 
 	// PUBLIC FUNCTIONS 
@@ -73,6 +74,8 @@ function Controller(){
 		
 	}
 
+	// determines what state will be travelled to once
+	// the Next button is pressed
 	function onNextClick() {
 
 		if (state == "letters") {
@@ -94,23 +97,36 @@ function Controller(){
 		}
 	}
 
+	// determines what state will be travelled to once
+	// the Back button is pressed
+	function onBackClick(){
+		if (state == "highlight"){
+			state = "letters";
+		}
+		else if (state == "result"){
+			state = "highlight";
+		}
+
+	}
+
 
 	
 	function highlight(letter, x, y) {
-		view.highlight(letter, x, y);
 		if (model.hl_grid[y][x] == "H") {
 
 			// deletes highlight in array
-			model.hl_grid[y][x] == "";
+			model.hl_grid[y][x] = "";
+			view.addLetter(letter, x, y);
 			console.table(model.hl_grid);
 
 			// deletes highlight but keeps letter
 			// in the view
-			view.addLetter(letter, x, y);
+			
 		
 		} else {
 
 			// create highlight in array and view
+			view.highlight(letter, x, y);
 			model.hl_grid[y][x] = "H";
 			console.table(model.hl_grid);
 		}
