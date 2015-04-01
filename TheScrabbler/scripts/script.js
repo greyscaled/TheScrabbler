@@ -11,7 +11,8 @@ function Model(){
 	// Fields
 	this.grid = grid;
 	this.hl_grid = hl_grid; 
-
+	this.dictionary = getDictionary();
+	
 	// Public Methods  
 
 	//--Static Methods
@@ -30,7 +31,23 @@ function Model(){
 		}
 		return grid;
 	};
-
+	function getDictionary(){
+	//requesting and reading from file and if its found then reading from it
+	    var rawFile = new XMLHttpRequest();
+	    rawFile.open("GET", "http://localhost/Scrabbler/input/dictionary.txt", false);
+	    rawFile.onreadystatechange = function ()
+	    {
+	        if(rawFile.readyState === 4)
+	        {
+	            if(rawFile.status === 200 || rawFile.status == 0)
+	            {
+	                var allText = rawFile.responseText;
+	                alert(allText); //TODO make a data structure
+	            }
+	        }
+	    }
+	    rawFile.send(null);
+	}
 
 	//console.table(grid);  (TESTING)
 
