@@ -9,7 +9,8 @@ function Model(){
 	var grid = initGrid(ROWS, COLUMNS); // calls with global vars
 	var hl_grid = initGrid(ROWS, COLUMNS);
 	// Fields
-	this.grid = grid;   
+	this.grid = grid; 
+	this.hl_grid = hl_grid;  
 
 	// Public Methods  
 
@@ -87,14 +88,22 @@ function Controller(){
 		}
 	}
 
+	function onBackClick() {
+		if (state == "highlight"){
+			state = "letters";
+		} else if (state == "result"){
+			state == "highlight";
+		}
+
+	}
+
 
 	
 	function highlight(letter, x, y) {
-		view.highlight(letter, x, y);
 		if (model.hl_grid[y][x] == "H") {
 
 			// deletes highlight in array
-			model.hl_grid[y][x] == "";
+			model.hl_grid[y][x] = "";
 			console.table(model.hl_grid);
 
 			// deletes highlight but keeps letter
@@ -104,6 +113,7 @@ function Controller(){
 		} else {
 
 			// create highlight in array and view
+			view.highlight(letter, x, y);
 			model.hl_grid[y][x] = "H";
 			console.table(model.hl_grid);
 		}
@@ -133,6 +143,8 @@ function Controller(){
 						view.addLetter(letter.toUpperCase(),x, y);
 						model.grid[y][x] = letter.toUpperCase(); // note: x/y oppos.
 						console.table(model.grid); // TESTING
+					} else {
+						window.alert("Please select a valid letter");
 					}
 				} else {
 					window.alert("Please select a valid letter");
@@ -148,7 +160,7 @@ function Controller(){
 
 	// Static Method 
 	function getLetter(x_Pos, y_Pos) {
-		return model.grid[position.y][position.x];
+		return model.grid[y_Pos][x_Pos];
 	}
 
 	function getClick(e){
