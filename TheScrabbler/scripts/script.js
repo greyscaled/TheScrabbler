@@ -150,6 +150,24 @@ function View(canvasID){
 		ctx.font="25px Georgia";
 		ctx.fillText(letter,(15+(x*50)),35+(y*50));
 	};
+	
+	this.highlight = function(letter,x,y){
+		//Highlight the certain square in the view
+		ctx.clearRect(x*50, y*50, width, height);
+		ctx.strokeStyle = "black";
+		ctx.fillStyle = "blue";
+		ctx.beginPath();
+		ctx.lineWidth = 1;
+		ctx.rect(width * x, height *y, width, height);
+		ctx.closePath();
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.fillStyle="white";
+		ctx.font="25px Georgia";
+		ctx.fillText(letter,(15+(x*50)),35+(y*50));
+
+	}
 
 
 } // end of View Class
