@@ -9,7 +9,8 @@ function Model(){
 	var grid = initGrid(ROWS, COLUMNS); // calls with global vars
 	var hl_grid = initGrid(ROWS, COLUMNS);
 	// Fields
-	this.grid = grid;   
+	this.grid = grid;
+	this.hl_grid = hl_grid; 
 
 	// Public Methods  
 
@@ -42,10 +43,16 @@ function Model(){
 function Controller(){
 	// Static Variables
 	var canvasID = document.getElementById('canvas');
+	var nextButton = document.getElementById("nextbtn");
 	var view = new View(canvasID);
 	var model = new Model();
-	canvasID.addEventListener("click",onGridClick,false);
 	var state = "letters";
+
+	// Event Listeners
+	canvasID.addEventListener("click",onGridClick,false);
+	nextButton.addEventListener("click",onNextClick,false);
+
+	
 
 	// PUBLIC FUNCTIONS 
 
@@ -148,7 +155,7 @@ function Controller(){
 
 	// Static Method 
 	function getLetter(x_Pos, y_Pos) {
-		return model.grid[position.y][position.x];
+		return model.grid[y_Pos][x_Pos];
 	}
 
 	function getClick(e){
