@@ -121,6 +121,18 @@ function View(canvasID){
 	}
 
 	this.addLetter = function (letter, x, y) {
+		// Clear previous entries
+		ctx.clearRect(x*50, y*50, width, height);
+		ctx.strokeStyle = "black";
+		ctx.fillStyle = "yellow";
+		ctx.beginPath();
+		ctx.lineWidth = 1;
+		ctx.rect(width * x, height *y, width, height);
+		ctx.closePath();
+		ctx.fill();
+		ctx.stroke();
+
+		// Make new entry based on valid input letter
 		ctx.fillStyle="black";
 		ctx.font="25px Georgia";
 		ctx.fillText(letter,(15+(x*50)),35+(y*50));
@@ -128,4 +140,3 @@ function View(canvasID){
 
 
 } // end of View Class
-
