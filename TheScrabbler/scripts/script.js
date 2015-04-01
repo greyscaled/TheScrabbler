@@ -44,14 +44,22 @@ function Controller(){
 	var canvasID = document.getElementById('canvas');
 	var view = new View(canvasID);
 	var model = new Model();
-	canvasID.addEventListener("click",nextState,false);
+	canvasID.addEventListener("click",tempStateMachine,false);
+
+	function tempStateMachine(e) {
+		inputLetter(getClick(e).x, getClick(e).y);
+	}
 	
 	// Static Methods
-	function nextState(e){
+	function getClick(e){
 		var x_Pos = e.clientX;
 		var y_Pos = e.clientY;
 		var position = normalize(x_Pos,y_Pos);
 		console.log(position.x+","+position.y);
+		return {x: position.x, y: position.y};
+	}
+
+	function inputLetter(x, y) {
 
 		// will be moved to its own function in due time.
 		// quick and dirty check to see if they entered exactly 1 char
@@ -65,8 +73,8 @@ function Controller(){
 			if (letter.match(aLetters)){		//If the value has a-z or A-Z in it return true
 				if (letter.length == 1) {
 					// changing the letters to their uppercase when printing to the view and model
-					view.addLetter(letter.toUpperCase(),position.x, position.y);
-					model.grid[position.y][position.x] = letter.toUpperCase(); // note: x/y oppos.
+					view.addLetter(letter.toUpperCase(),x, y);
+					model.grid[y][x] = letter.toUpperCase(); // note: x/y oppos.
 					console.table(model.grid); // TESTING
 				}
 			} else {
