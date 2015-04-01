@@ -55,7 +55,6 @@ function Controller(){
 
 		// will be moved to its own function in due time.
 		// quick and dirty check to see if they entered exactly 1 char
-		// TODO: check if a-->z
 		var letter = prompt("Enter a letter");
 
 		// creating a regular expression and setting it to
@@ -67,7 +66,7 @@ function Controller(){
 				if (letter.length == 1) {
 					// changing the letters to their uppercase when printing to the view and model
 					view.addLetter(letter.toUpperCase(),position.x, position.y);
-					model.grid[position.y][position.x] = letter.toUpperCase(); // note: opposite
+					model.grid[position.y][position.x] = letter.toUpperCase(); // note: x/y oppos.
 					console.table(model.grid); // TESTING
 				}
 			} else {
@@ -92,6 +91,12 @@ function Controller(){
 	}
 
 	
+	// PRIVATE METHODS
+
+	// Static Method 
+	function getLetter(x_Pos, y_Pos) {
+		return model.grid[position.y][position.x];
+	}
 
 
 } // end of Controller class
