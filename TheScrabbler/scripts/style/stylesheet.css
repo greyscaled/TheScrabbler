@@ -1,1 +1,25 @@
+#instructions {
+	border: 2px solid #a1a1a1;
+    border-radius: 25px;
+    background-color: #002550;
+    font-family: "Times New Roman", Times, serif;
+    color: #FF99FF;
+    padding: 10px;
+    text-align: justify;
 
+}
+
+header {
+	font-family: "Times New Roman", Georgia, Serif;
+	text-align: center;
+	font-size: 20px;
+	color: #6600CC;
+
+}
+
+#begin {
+	width: 760px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 3px;
+}
