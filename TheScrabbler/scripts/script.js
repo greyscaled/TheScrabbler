@@ -34,7 +34,8 @@ function Model(){
 	function getDictionary(){
 	//requesting and reading from file and if its found then reading from it
 	    var rawFile = new XMLHttpRequest();
-	    rawFile.open("GET", "http://localhost/Scrabbler/input/dictionary.txt", false);
+	    var url = "input/dictionary.txt";
+	    rawFile.open("GET", url, false);
 	    rawFile.onreadystatechange = function ()
 	    {
 	        if(rawFile.readyState === 4)
@@ -62,6 +63,7 @@ function Controller(){
 	var canvasID = document.getElementById('canvas');
 	var nextButton = document.getElementById("nextbtn");
 	var backButton = document.getElementById("backbtn");
+	var resetButton = document.getElementById("resetbtn");
 	var view = new View(canvasID);
 	var model = new Model();
 	var state = "letters";
@@ -70,6 +72,7 @@ function Controller(){
 	canvasID.addEventListener("click",onGridClick,false);
 	nextButton.addEventListener("click",onNextClick,false);
 	backButton.addEventListener("click",onBackClick,false);
+	resetButton.addEventListener("click", resetN, false);
 	
 
 	// PUBLIC FUNCTIONS 
@@ -97,10 +100,12 @@ function Controller(){
 
 		if (state == "letters") {
 			state = "highlight";
+			updatePStatus(state);
 		
 		} else if (state == "highlight") {
 			if (hl_check()) {
 				state = "result";
+				updatePStatus(state)
 			}
 			else {
 				// invalid highlighting of cells
@@ -108,9 +113,7 @@ function Controller(){
 			}
 
 		} else {
-			// reset everything
-			model = new Model();
-			view = new View();
+			resetN();
 		}
 	}
 
@@ -119,14 +122,32 @@ function Controller(){
 	function onBackClick(){
 		if (state == "highlight"){
 			state = "letters";
+			updatePStatus(state);
 		}
 		else if (state == "result"){
 			state = "highlight";
+			updatePStatus(state);
 		}
 
 	}
 
+	function resetN() {
+		location.reload();
+	}
 
+	function updatePStatus(state) {
+		var s_i = "Click on the grid below and enter letters.  When finished, press next.  If you wish to delete a letter, simply click on it and hit enter.";
+
+		var s_h = "Click the cells of which you would like to form a word from your tiles.  The cells must be adjacent and in a vertical or horizontal line.  When you're done, click next.";
+
+		if (state == "letters") {
+			view.updatePStatus(s_i);
+
+		} else if (state == "highlight") {
+			view.updatePStatus(s_h);
+		}
+
+	}
 	
 	function highlight(letter, x, y) {
 		if (model.hl_grid[y][x] == "H") {
@@ -187,6 +208,12 @@ function Controller(){
 	// PRIVATE METHODS
 
 	// Static Method 
+
+	function hl_check() {
+		// TODO: stub
+		return true;
+	}
+
 	function getLetter(x_Pos, y_Pos) {
 		return model.grid[y_Pos][x_Pos];
 	}
@@ -275,6 +302,10 @@ function View(canvasID){
 		ctx.font="25px Georgia";
 		ctx.fillText(letter,(15+(x*50)),35+(y*50));
 
+	};
+
+	this.updatePStatus = function(string) {
+		document.getElementById("pstatus").innerHTML = string;
 	};
 
 
