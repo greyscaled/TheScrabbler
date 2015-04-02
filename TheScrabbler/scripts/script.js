@@ -8,10 +8,13 @@ function Model(){
 	// Local Variables
 	var grid = initGrid(ROWS, COLUMNS); // calls with global vars
 	var hl_grid = initGrid(ROWS, COLUMNS);
+	var words = [];
+
 	// Fields
 	this.grid = grid;
 	this.hl_grid = hl_grid; 
 	this.dictionary = getDictionary();
+	this.words = words;
 	
 	// Public Methods  
 
@@ -43,7 +46,8 @@ function Model(){
 	            if(rawFile.status === 200 || rawFile.status == 0)
 	            {
 	                var allText = rawFile.responseText;
-	                alert(allText); //TODO make a data structure
+	                //console.log(allText); //TODO make a data structure
+	                words = allText.split("\n");
 	            }
 	        }
 	    }
@@ -106,6 +110,7 @@ function Controller(){
 			if (hl_check()) {
 				state = "result";
 				updatePStatus(state)
+				getResult();
 			}
 			else {
 				// invalid highlighting of cells
@@ -202,7 +207,9 @@ function Controller(){
 		}
 	}
 
-	
+	function getResult() {
+		window.alert(model.words[0]);
+	}
 
 	
 	// PRIVATE METHODS
