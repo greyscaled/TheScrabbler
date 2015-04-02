@@ -126,6 +126,47 @@ function Controller(){
 
 	}
 
+	// checks to see if the proper highlighting has happened,
+	// warns user if they have highlighted incorrectly
+	// go from top row to the right and down, row by row,
+	// when the first "H" is found look both bellow and
+	// to the right of it. If there are elements in both
+	// directions return false, otherewise keep going
+	// in that direction until there is no "H" (a gap)
+	// then compare hCount with hCheckCount. If there is a difference
+	// return false
+
+
+	this.hl_check = function hl_check(){
+		var hCount = 0;
+		var hCheckCount = 0;
+		
+		for (i = 0; i< COLUMNS; i++){
+			for (j = 0; j < ROWS; j++){
+				if (model.hl_grid[j][i] == "H"){
+					hCount++;
+				}
+			}
+		}
+		
+		if (hCount < 1 || hCount > 7) {
+			window.alert("You must highlight 1 to 7 squares");
+			return false;
+		} else{
+
+			for (var i = 0; i< COLUMNS; i++){
+				for (var j = 0; j < ROWS; j++){
+					if (model.hl_grid[j][i] === "H"){
+						hCheckCount++;
+					}	
+				}
+			}
+		}
+		console.log(hCount);
+		// TODOfix the issue where the log count is being erased every time the next state is entered
+		return true;
+	}
+
 
 	
 	function highlight(letter, x, y) {
@@ -173,7 +214,7 @@ function Controller(){
 						view.addLetter(letter.toUpperCase(),x, y);
 						model.grid[y][x] = letter.toUpperCase(); // note: x/y oppos.
 						console.table(model.grid); // TESTING
-					}
+					} else{window.alert("Please select a valid letter");}
 				} else {
 					window.alert("Please select a valid letter");
 				}
