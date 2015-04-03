@@ -197,7 +197,7 @@ function Controller(){
 					if (letter.length == 1) {
 						// changing the letters to their uppercase when printing to the view and model
 						view.addLetter(letter.toUpperCase(),x, y);
-						model.grid[y][x] = letter.toUpperCase(); // note: x/y oppos.
+						model.grid[y][x] = letter.toLowerCase(); // note: x/y oppos.
 						console.table(model.grid); // TESTING
 					}
 				} else {
