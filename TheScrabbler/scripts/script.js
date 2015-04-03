@@ -16,13 +16,110 @@ function Model(){
 	this.dictionary = getDictionary();
 	this.words = words;
 	
-	// Public Methods  
+	// Public Methods
+
+	// returns: regM (regex of highlighted area)
+
+	this.createRegex = function() {
+		var reMain = "";
+		var Direction = findHl();
+		console.log(Direction);
+
+		// if vertical, create vertical regexs
+		if (Direction.d == "vertical") {
+			for (var i = 0; i < ROWS; i++) {
+				if(this.grid[i][Direction.x] != "") {
+					if (this.hl_grid[i][Direction.x] == "H"
+						|| adj(i, Direction.x, "vertical")) {
+
+						reMain += this.grid[i][Direction.x];
+					}
+				} else if(this.hl_grid[i][Direction.x] == "H") {
+					
+					if (this.grid[i][Direction.x] == "") {
+						reMain+="[a-z]";
+					
+					} else {
+						reMain += this.grid[i][Direction.x];
+					}
+					
+				}
+			}
+		} else if (Direction.d == "horizontal") {
+			for (var j = 0; j < COLUMNS; j++) {
+				if (this.grid[Direction.y][j] != "") {
+					if (this.hl_grid[Direction.y][j] == "H"
+						|| adj(Direction.y, j, "horizontal")) {
+
+						reMain += this.grid[Direction.y][j];
+					}
+				} else if(this.hl_grid[Direction.y][j] == "H") {
+
+					if (this.grid[Direction.y][j] == "") {
+						reMain +="[a-z]";
+					
+					} else {
+						reMain += this.grid[Direction.y][j];
+					}
+				}
+			}
+		}
+		var regm = new RegExp(reMain);
+		console.log(regm);
+		return regm;
+	};
 
 	//--Static Methods
 
 	//--Instance Methods               
 
 	// Private Methods
+
+	function adj(i, j, d) {
+		if (d == "vertical") {
+			if (i < (ROWS - 1) && hl_grid[i+1][j] == "H") {
+				return true;
+			
+			} else if(i > 0 && hl_grid[i-1][j] == "H") {
+				return true;
+			
+			} else {
+				return false;
+			}
+		
+		} else if(d == "horizontal") {
+			if (j < (COLUMNS - 1) && hl_grid[i][j+1] == "H") {
+				return true;
+			
+			} else if(j > 0 && hl_grid[i][j-1] == "H") {
+				return true;
+			}
+		}
+	}
+
+	function findHl() {
+		// Finds what direction the highlighted cells are
+		// returns: d: vertical, horizontal or single 
+		// 			as well as start coordinates x, y
+		for (var i = 0; i < ROWS; i++) {
+			for (var j = 0; j < COLUMNS; j++) {
+				if (hl_grid[i][j] == "H") {
+					if (i < (ROWS - 1) && hl_grid[i+1][j] == "H") {
+						return {d: "vertical", y:i, x:j};
+					
+					} else if (j < (COLUMNS - 1) && hl_grid[i][j+1] == "H") {
+						return {d:"horizontal", y:i, x:j};
+					
+					} else {
+						return {d:"single", y:i, x:j};
+
+					}
+				}
+			}
+		}
+
+	}
+
 	function initGrid(rows, columns) {
 		var grid = [];
 		for (var i = 0; i < rows; i++) {
@@ -110,7 +207,8 @@ function Controller(){
 			if (hl_check()) {
 				state = "result";
 				updatePStatus(state)
-				getResult();
+				//getResult();
+				model.createRegex();
 			}
 			else {
 				// invalid highlighting of cells
@@ -178,8 +276,6 @@ function Controller(){
 	
 	function inputLetter(x, y) {
 
-		// will be moved to its own function in due time.
-		// quick and dirty check to see if they entered exactly 1 char
 		var letter = prompt("Enter a letter.\nEnter nothing to delete a letter.");
 
 		// creating a regular expression and setting it to
@@ -188,16 +284,28 @@ function Controller(){
 
 		if (letter != null) {  // cancel returns null
 			if (letter == "") {
-				view.addLetter(letter, x, y);
-				model.grid[y][x] = letter;
+				model.grid[y][x] = letter; // do this first
+				if (model.hl_grid[y][x] == "H") {
+					view.addHLetter(letter, x, y); // keep highlight
+				
+				} else {
+					view.addLetter(letter, x, y);
+				}
+				
+				
 			} else {
-
-
-				if (letter.match(aLetters)){		//If the value has a-z or A-Z in it return true
+				//If the value has a-z or A-Z in it return true
+				if (letter.match(aLetters)){		
 					if (letter.length == 1) {
 						// changing the letters to their uppercase when printing to the view and model
-						view.addLetter(letter.toUpperCase(),x, y);
-						model.grid[y][x] = letter.toLowerCase(); // note: x/y oppos.
+						model.grid[y][x] = letter.toLowerCase();
+						if (model.hl_grid[y][x] == "H") {
+							view.addHLetter(letter.toUpperCase(), x, y);
+						
+						} else {
+							view.addLetter(letter.toUpperCase(),x, y);
+						}
+						
 						console.table(model.grid); // TESTING
 					}
 				} else {
@@ -208,7 +316,7 @@ function Controller(){
 	}
 
 	function getResult() {
-		window.alert(model.words[0]);
+		window.alert(model.words[60500]);
 	}
 
 	
@@ -292,6 +400,24 @@ function View(canvasID){
 		ctx.font="25px Georgia";
 		ctx.fillText(letter,(15+(x*50)),35+(y*50));
 	};
+
+	this.addHLetter = function (letter, x, y) {
+		ctx.clearRect(x*50, y*50, width, height);
+		ctx.strokeStyle = "black";
+		ctx.fillStyle = "blue";
+		ctx.beginPath();
+		ctx.lineWidth = 1;
+		ctx.rect(width * x, height *y, width, height);
+		ctx.closePath();
+		ctx.fill();
+		ctx.stroke();
+
+		// Make new entry based on valid input letter
+		ctx.fillStyle="white";
+		ctx.font="25px Georgia";
+		ctx.fillText(letter,(15+(x*50)),35+(y*50));
+
+	}
 
 	this.highlight = function(letter,x,y){
 		//Highlight the certain square in the view
