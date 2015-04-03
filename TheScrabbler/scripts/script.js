@@ -89,7 +89,7 @@ function Controller(){
 			inputLetter(x, y);
 		
 		} else if (state == "highlight") {
-			highlight(getLetter(x, y), x, y);
+			highlight(getLetter(x, y).toUpperCase(), x, y);
 		
 		} else {
 			// model = new Model();
