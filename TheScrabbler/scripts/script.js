@@ -70,76 +70,75 @@ function Model(){
 	};
 	
 	
-function Heap(){
-	this.scores = ['-'];
-}
-
-// think of this as a class and all it's methods
-// Its weird because JavaScript has no classes so this
-// syntax might seem a bit odd
-Heap.prototype = {
-	
-	size: function(){
-		return this.scores.length -1;
-	},
-
-	exch: function(i,j){
-		var temp = this.scores[i];
-		this.scores[i] = this.scores[j];
-		this.scores[j] = temp;
-	},
-
-	less: function(i,j){
-		return this.scores[i] < this.scores[j];
-	},
-
-	add: function(integer){
-		this.scores.push(integer);
-		this.swim(this.scores.length -1);
-	},
-
-	top: function(){
-		var top = this.scores[1];
-		return top;
-	},
-
-	// takes the first element from the top off, returns the top
-	pop: function() {
-		var top = this.scores[1];
-		var last = this.scores.pop(); 
-		
-		if (this.scores.length > 0){
-			this.scores[1] = last;
-			this.sink(1);
-		}
-		return top;
-	},
-
-	sink: function(index){
-		var size = this.size();
-		while (2*index <= size){
-			var j = 2*index;
-			if (j< size && this.less(j,j+1)){
-				j++;
-			}
-			if (!this.less(index,j)){
-				break;
-			}
-			this.exch(index,j);
-			index = j;
-		}
-	},
-
-	swim: function(index){
-		var size = this.size();
-
-		while (index > 1 && this.less(Math.floor(index/2),index)){
-			console.log(this.less(Math.floor(index/2),index))
-			this.exch(Math.floor(index/2),index);
-			index = Math.floor(index/2);
-		}
+	function Heap(){
+		this.scores = ['-'];
 	}
-};
+
+	// think of this as a class and all it's methods
+	// Its weird because JavaScript has no classes so this
+	// syntax might seem a bit odd
+	Heap.prototype = {
+	
+		size: function(){
+			return this.scores.length -1;
+		},
+	
+		exch: function(i,j){
+			var temp = this.scores[i];
+			this.scores[i] = this.scores[j];
+			this.scores[j] = temp;
+		},
+	
+		less: function(i,j){
+			return this.scores[i] < this.scores[j];
+		},
+	
+		add: function(integer){
+			this.scores.push(integer);
+			this.swim(this.scores.length -1);
+		},
+	
+		top: function(){
+			var top = this.scores[1];
+			return top;
+		},
+	
+		// takes the first element from the top off, returns the top
+		pop: function() {
+			var top = this.scores[1];
+			var last = this.scores.pop(); 
+			
+			if (this.scores.length > 0){
+				this.scores[1] = last;
+				this.sink(1);
+			}
+			return top;
+		},
+
+		sink: function(index){
+			var size = this.size();
+			while (2*index <= size){
+				var j = 2*index;
+				if (j< size && this.less(j,j+1)){
+					j++;
+				}
+				if (!this.less(index,j)){
+					break;
+				}
+				this.exch(index,j);
+				index = j;
+			}
+		},
+	
+		swim: function(index){
+			var size = this.size();
+	
+			while (index > 1 && this.less(Math.floor(index/2),index)){
+				this.exch(Math.floor(index/2),index);
+				index = Math.floor(index/2);
+			}
+		}
+	};
 
 	//--Static Methods
 
