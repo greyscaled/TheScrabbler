@@ -23,3 +23,22 @@ header {
 	margin-right: auto;
 	padding-top: 3px;
 }
+
+section {
+    width: 80%;
+    margin: auto;
+    padding: 10px;
+  
+}
+
+div#one {
+    float: left;
+   
+}
+div#two {
+	padding-left: 40px;
+	height: 300px;
+	width: 100px;
+	overflow: auto;
+    
+}

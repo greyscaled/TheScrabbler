@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="style/stylesheet.css">
 		<script src="datastructs.js"></script>
 		<script src="script.js"></script> <!--Load Script here-->
 
@@ -14,20 +15,24 @@
 			delete a letter, simply click on it and hit enter. </p>
 		</div>
 
-		<div>
-			<canvas id="canvas" width="350" height="350"></canvas>
+		<div id="main">
+			<div id="one">
+				<canvas id="canvas" width="350" height="350"></canvas>
+			</div>
+		<div id="two">
+			<p> RESULTS</p>
+			<p id="results"></p>
+		</div>
 		</div>
 
+		<br>
 		<div>
 			<button id="nextbtn">Next</button>
 			<button id ="backbtn">Back</button>
 			<button id ="resetbtn">Reset</button>
 		</div>
 		
-		<div id="resultbox" style="width:100px; height:100px; overflow: auto;">
-			<p> RESULTS</p>
-			<p id="results"></p>
-		</div>
+		
 		
 		<!--Start Script here-->
 		<script>

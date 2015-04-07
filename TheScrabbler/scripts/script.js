@@ -662,7 +662,7 @@ function View(canvasID){
 		returnstring = "";
 		var temp;
 		var N;
-		if (object.heap.size() >= 10) {N = 10;}
+		if (object.heap.size() >= 20) {N = 20;}
 		else {N = object.heap.size();}
 
 		for (var i = 1; i < N; i++) {
