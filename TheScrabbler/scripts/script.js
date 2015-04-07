@@ -4,7 +4,7 @@ var COLUMNS = 7;
 //==================================================================
 
 //==================MODEL CLASS=====================================
-function Model(){
+function Model() {
 	// Local Variables
 	var grid = initGrid(ROWS, COLUMNS); // calls with global vars
 	var hl_grid = initGrid(ROWS, COLUMNS);
@@ -151,8 +151,9 @@ var regm = new RegExp(reMain);
 		 		return null;
 		 	}
 		 	var max = this.words[1];
-		 	this.words.splice(1, 1);
+		 	
 		 	this.exch(1, this.size());
+		 	this.words.splice(this.size(), 1);
 		 	this.sink(1);
 		 	return max;
 		 };
@@ -452,11 +453,15 @@ function Controller(){
 	function findBestWords() {
 		var pattern = model.createRegex();
 		console.log(pattern);
+
 		var matches = model.dictionary.matchesPattern(pattern.key, pattern.regex);
 		for (var i = 0; i < matches.length; i++) {
 			model.heap.add(matches[i]);
+			
 		}
 		console.log(model.heap.top().word);
+		view.updateResult(model);
+
 	}
 
 	
@@ -650,7 +655,26 @@ function View(canvasID){
 	};
 
 	this.updatePStatus = function(string) {
-		document.getElementById("pstatus").innerHTML = string;
+
+	};
+
+	this.updateResult = function(object) {
+		returnstring = "";
+		var temp;
+		var N;
+		if (object.heap.size() >= 10) {N = 10;}
+		else {N = object.heap.size();}
+
+		for (var i = 1; i < N; i++) {
+			temp = object.heap.pop();
+			returnstring += temp.word
+							+ "&emsp;"
+							+ temp.score
+							+ "<br/>";
+		}
+		document.getElementById("results").innerHTML = returnstring;
+
+
 	};
 
 
