@@ -337,12 +337,6 @@ function Controller(){
 	var model = new Model();
 	var state = "letters";
 	var form = document.getElementById("tit");
-	var tiles = "";
-	
-	for (var i = 0; i < 7; i++) {
-		tiles += form.elements[i].value;
-	}
-	console.log(tiles);
 
 	// Event Listeners
 	canvasID.addEventListener("click",onGridClick,false);
@@ -414,7 +408,12 @@ function Controller(){
 	}
 
 	function resetN() {
-		location.reload();
+		location.reload(); // refreshes window
+	
+		for (var i = 0; i < 7; i++) { // clears tile entries
+			form.elements[i].value = "";
+		}
+	
 	}
 
 	function updatePStatus(state) {
