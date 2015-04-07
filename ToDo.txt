@@ -17,3 +17,8 @@ Meetings:
 	#5 = Protoype working for just scoring tiles  [DONE]
 	#6 = Finished Prototype
 	#7 = Polish The product
+
+
+- wrap findBestWord to a model module
+- fix the null point error thing with the tries
+- change the the createRegex to send back an array of chars representing the regex
