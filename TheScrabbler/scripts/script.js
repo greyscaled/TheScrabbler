@@ -350,6 +350,7 @@ function Controller(){
 
 		} else if (state == "result") {
 			findBestWords();
+			state = "finish";
 
 		} else { resetN(); }
 
