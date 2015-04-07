@@ -1,6 +1,7 @@
 // GLOBAL VARIABLES ================================================
 var ROWS = 7;
 var COLUMNS = 7;
+var NUMWORDS = 20;
 //==================================================================
 
 //==================MODEL CLASS=====================================
@@ -48,49 +49,84 @@ function Model() {
 						|| adj(i, Direction.x, "vertical")) {
 
 						reMain += this.grid[i][Direction.x];
+					count++;
+					}	
+			
+				} else if(this.hl_grid[i][Direction.x] == "H") {
+
+					if (this.grid[i][Direction.x] == "") {
+						reMain+="\\w";
 						count++;
-				}	
-			} else if(this.hl_grid[i][Direction.x] == "H") {
+					} else {
+						reMain += this.grid[i][Direction.x];
+						count++;
+					}	
 
-				if (this.grid[i][Direction.x] == "") {
-					reMain+="\\w";
-					count++;
-				} else {
-					reMain += this.grid[i][Direction.x];
-					count++;
-				}	
+				}
+			}
+		
+		} else if (Direction.d == "horizontal") {
+			for (var j = 0; j < COLUMNS; j++) {
+				if (this.grid[Direction.y][j] != "") {
+					if (this.hl_grid[Direction.y][j] == "H"
+						|| adj(Direction.y, j, "horizontal")) {
 
+						reMain += this.grid[Direction.y][j];
+						count++;
+				
+					}
+			
+				} else if(this.hl_grid[Direction.y][j] == "H") {
+
+					if (this.grid[Direction.y][j] == "") {
+						reMain +="\\w";
+						count++;
+
+					} else {
+						reMain += this.grid[Direction.y][j];
+						count++;
+					}
+				}
 			}
 		}
-	} else if (Direction.d == "horizontal") {
-		for (var j = 0; j < COLUMNS; j++) {
-			if (this.grid[Direction.y][j] != "") {
-				if (this.hl_grid[Direction.y][j] == "H"
-					|| adj(Direction.y, j, "horizontal")) {
-
-					reMain += this.grid[Direction.y][j];
-					count++;
-			}
-		} else if(this.hl_grid[Direction.y][j] == "H") {
-
-			if (this.grid[Direction.y][j] == "") {
-				reMain +="\\w";
-				count++;
-
-			} else {
-				reMain += this.grid[Direction.y][j];
-				count++;
-			}
-		}
-	}
-}
-var regm = new RegExp(reMain);
+		var regm = new RegExp(reMain);
 		//console.log(regm);
 		//console.log(count);
 		//console.log(regm.test("hey"));
 		return {key:count, regex:regm};
 	};
 	
+	/* public Word[] getMatches()
+	 * @return: array of Words sorted
+	 */
+
+	 this.createMatches = function() {
+	 	var regex = this.createRegex();
+	 	return this.dictionary.matchesPattern(regex.key, regex.regex);
+
+	 }
+
+	 this.sortMatches = function(matches) {
+	 	for (var i = 0; i < matches.length; i++) {
+	 		this.heap.add(matches[i]);
+	 	}
+
+
+	 }
+
+	 this.getMatches = function (number) {
+	 	var result = [];
+	 	var N = 0;
+
+	 	if (this.heap.size() >= number) { N = number;}
+	 	else {N = this.heap.size();}
+
+	 	for (var i = 1; i < N; i++) {
+	 		result.push(this.heap.pop());
+	 	}
+	 	return result;
+	 }
+
 	
 	
 	//--Static Methods
@@ -300,6 +336,13 @@ function Controller(){
 	var view = new View(canvasID);
 	var model = new Model();
 	var state = "letters";
+	var form = document.getElementById("tit");
+	var tiles = "";
+	
+	for (var i = 0; i < 7; i++) {
+		tiles += form.elements[i].value;
+	}
+	console.log(tiles);
 
 	// Event Listeners
 	canvasID.addEventListener("click",onGridClick,false);
@@ -452,16 +495,8 @@ function Controller(){
 	}
 
 	function findBestWords() {
-		var pattern = model.createRegex();
-		console.log(pattern);
-
-		var matches = model.dictionary.matchesPattern(pattern.key, pattern.regex);
-		for (var i = 0; i < matches.length; i++) {
-			model.heap.add(matches[i]);
-			
-		}
-		console.log(model.heap.top().word);
-		view.updateResult(model);
+		model.sortMatches(model.createMatches());
+		view.updateResult(model.getMatches(NUMWORDS));
 
 	}
 
@@ -659,15 +694,10 @@ function View(canvasID){
 
 	};
 
-	this.updateResult = function(object) {
+	this.updateResult = function(results) {
 		returnstring = "";
-		var temp;
-		var N;
-		if (object.heap.size() >= 20) {N = 20;}
-		else {N = object.heap.size();}
-
-		for (var i = 1; i < N; i++) {
-			temp = object.heap.pop();
+		for (var i = 0; i < results.length; i++) {
+			temp = results[i];
 			returnstring += temp.word
 							+ "&emsp;"
 							+ temp.score
