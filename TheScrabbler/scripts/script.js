@@ -17,13 +17,20 @@ function Model(){
 	this.words = words;
 	
 	// Public Methods
+
+	/* public int getResult()
+	 * Driver/Stub for now?
+	 */
 	this.getResult = function () {
 		var regExp = /a\w\w\w/g; 
 		var results = (this.dictionary).matchesPattern(4, regExp);
 		return results[0].score;
 	};
 	
-	// returns: regM (regex of highlighted area)
+	/* public String createRegex()
+	 *  may later be modified into char[]
+	 * @return: regM (regex of highlighted area)
+	 */
 
 	this.createRegex = function() {
 		var reMain = "";
@@ -75,52 +82,73 @@ function Model(){
 	};
 	
 	
+	
+	//--Static Methods
+
+	/* private Class Heap
+	 * public: size, add, top, pop
+	 * private: exch, less, sink, swim
+	 */
+
 	function Heap(){
-		this.scores = ['-'];
-	}
+		// field: words[]
+		this.words = ['-'];
 
-	// think of this as a class and all it's methods
-	// Its weird because JavaScript has no classes so this
-	// syntax might seem a bit odd
-	Heap.prototype = {
-	
-		size: function(){
-			return this.scores.length -1;
-		},
-	
-		exch: function(i,j){
-			var temp = this.scores[i];
-			this.scores[i] = this.scores[j];
-			this.scores[j] = temp;
-		},
-	
-		less: function(i,j){
-			return this.scores[i] < this.scores[j];
-		},
-	
-		add: function(integer){
-			this.scores.push(integer);
-			this.swim(this.scores.length -1);
-		},
-	
-		top: function(){
-			var top = this.scores[1];
-			return top;
-		},
-	
-		// takes the first element from the top off, returns the top
-		pop: function() {
-			var top = this.scores[1];
-			var last = this.scores.pop(); 
-			
-			if (this.scores.length > 0){
-				this.scores[1] = last;
-				this.sink(1);
+		/* public int size()
+		 * @return: size of queue
+		 */
+		this.size = function() {
+			return this.words.length - 1;
+		};
+
+		// helper function
+		this.exch = function(i,j) {
+			var temp = this.words[i];
+			this.words[i] = this.words[j];
+			this.words[j] = temp;
+		};
+
+		// helper function
+		this.less = function(i,j) {
+			return this.words[i].score < this.words[j].score;
+		};
+
+		/* public void add(Object Word)
+		 * sorts ADT Word into priqueue/heap
+		 */
+		this.add = function(wordADT) {
+			this.words.push(wordADT);
+			this.swim(this.words.length -1);
+		};
+
+		/* public Word top()
+		 * @return: returns max
+		 */
+		this.top = function(){
+			if (this.size() == 0) {return null;}
+			else {
+				var top = this.words[1];
+				return top;
 			}
-			return top;
-		},
+			
+		};
+	
+		/* public Word pop()
+		 * @return: returns and deletes max
+		 */
+		this.pop = function() {
+			if (this.size() == 0) {
+				return null;
+			}
+			var max = this.words[1];
+			this.words.splice(1, 1);
+			this.exch(1, this.size());
+			this.sink(1);
+			return max;
+		};
 
-		sink: function(index){
+		// helper function
+		this.sink = function(index){
 			var size = this.size();
 			while (2*index <= size){
 				var j = 2*index;
@@ -133,19 +161,19 @@ function Model(){
 				this.exch(index,j);
 				index = j;
 			}
-		},
+		};
 	
-		swim: function(index){
+		// helper function
+		this.swim = function(index){
 			var size = this.size();
 	
 			while (index > 1 && this.less(Math.floor(index/2),index)){
 				this.exch(Math.floor(index/2),index);
 				index = Math.floor(index/2);
 			}
-		}
-	};
+		};
 
-	//--Static Methods
+	}
 
 	//--Instance Methods               
 
@@ -169,6 +197,9 @@ function Model(){
 			
 			} else if(j > 0 && hl_grid[i][j-1] == "H") {
 				return true;
+			
+			} else {
+				return false;
 			}
 		}
 	}
@@ -206,7 +237,8 @@ function Model(){
 			grid.push(row);
 		}
 		return grid;
-	};
+	}
+
 	function getDictionary(){
 	//requesting and reading from file and if its found then reading from it
 	 	var bst = new BST();
