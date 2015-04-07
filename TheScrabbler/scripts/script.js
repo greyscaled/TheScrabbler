@@ -411,8 +411,68 @@ function Controller(){
 	// Static Method 
 
 	function hl_check() {
-		// TODO: stub
-		return true;
+		var count = 0;
+		var hlCoords = [];
+		
+		for(var i = 0; i < ROWS; i++){
+			for(var j = 0; j < COLUMNS; j++){
+				if (model.hl_grid[i][j] === "H"){
+					count++;
+					hlCoords.push([i,j]);
+				}
+			}
+		}
+		console.table(hlCoords);
+		console.log(hlCoords.length);
+
+		if (count < 1 || count > 7){
+			return false;
+		} else {
+			var vertical = true;
+			var horizontal = true;
+
+			//horizontal check
+			for(var i = 0; i < hlCoords.length; i++){
+				
+				for (var j = 0; j < hlCoords.length;j++){
+					if (hlCoords[i][0] != hlCoords[j][0]){
+						horizontal = false;
+					}
+					
+				}
+			}
+			
+			//vertical check
+			for(var i = 0; i < hlCoords.length; i++){
+				
+				for (var j = 0; j < hlCoords.length;j++){
+					if (hlCoords[i][1] != hlCoords[j][1]){
+						vertical = false;
+					}
+				}
+			}
+			
+			if (horizontal == vertical){
+				return false;
+			}
+
+			if (vertical == true){
+				if (hlCoords[hlCoords.length - 1][0] - hlCoords[0][0] + 1 != hlCoords.length){
+				
+					return false;
+				}
+
+			} 
+				if (horizontal == true) {
+				if (hlCoords[hlCoords.length - 1][1] - hlCoords[0][1] + 1 != hlCoords.length){
+				
+					return false;
+			}
+
+			return true;
+			}
+
+		}
 	}
 
 	function getLetter(x_Pos, y_Pos) {
