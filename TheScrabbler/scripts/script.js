@@ -23,21 +23,21 @@ function Model(){
 	/* public int getResult()
 	 * Driver/Stub for now?
 	 */
-	this.getResult = function () {
-		var regExp = /a\w\w\w/g; 
-		var results = (this.dictionary).matchesPattern(4, regExp);
-		return results[0].score;
-	};
-	
+	 this.getResult = function () {
+	 	var regExp = /a\w\w\w/g; 
+	 	var results = (this.dictionary).matchesPattern(4, regExp);
+	 	return results[0].score;
+	 };
+
 	/* public String createRegex()
 	 *  may later be modified into char[]
 	 * @return: regM (regex of highlighted area)
 	 */
 
-	this.createRegex = function() {
-		var reMain = "";
-		var Direction = findHl();
-		var count = 0;
+	 this.createRegex = function() {
+	 	var reMain = "";
+	 	var Direction = findHl();
+	 	var count = 0;
 		//console.log(Direction);
 
 		// if vertical, create vertical regexs
@@ -48,41 +48,43 @@ function Model(){
 						|| adj(i, Direction.x, "vertical")) {
 
 						reMain += this.grid[i][Direction.x];
-					}	count++;
-				} else if(this.hl_grid[i][Direction.x] == "H") {
-					
-					if (this.grid[i][Direction.x] == "") {
-						reMain+="\\w";
 						count++;
-					} else {
-						reMain += this.grid[i][Direction.x];
-					}	count++;
-					
-				}
-			}
-		} else if (Direction.d == "horizontal") {
-			for (var j = 0; j < COLUMNS; j++) {
-				if (this.grid[Direction.y][j] != "") {
-					if (this.hl_grid[Direction.y][j] == "H"
-						|| adj(Direction.y, j, "horizontal")) {
+				}	
+			} else if(this.hl_grid[i][Direction.x] == "H") {
 
-						reMain += this.grid[Direction.y][j];
-						count++;
-					}
-				} else if(this.hl_grid[Direction.y][j] == "H") {
+				if (this.grid[i][Direction.x] == "") {
+					reMain+="\\w";
+					count++;
+				} else {
+					reMain += this.grid[i][Direction.x];
+					count++;
+				}	
 
-					if (this.grid[Direction.y][j] == "") {
-						reMain +="\\w";
-						count++;
-					
-					} else {
-						reMain += this.grid[Direction.y][j];
-						count++;
-					}
-				}
 			}
 		}
-		var regm = new RegExp(reMain);
+	} else if (Direction.d == "horizontal") {
+		for (var j = 0; j < COLUMNS; j++) {
+			if (this.grid[Direction.y][j] != "") {
+				if (this.hl_grid[Direction.y][j] == "H"
+					|| adj(Direction.y, j, "horizontal")) {
+
+					reMain += this.grid[Direction.y][j];
+					count++;
+			}
+		} else if(this.hl_grid[Direction.y][j] == "H") {
+
+			if (this.grid[Direction.y][j] == "") {
+				reMain +="\\w";
+				count++;
+
+			} else {
+				reMain += this.grid[Direction.y][j];
+				count++;
+			}
+		}
+	}
+}
+var regm = new RegExp(reMain);
 		//console.log(regm);
 		//console.log(count);
 		//console.log(regm.test("hey"));
@@ -98,16 +100,16 @@ function Model(){
 	 * private: exch, less, sink, swim
 	 */
 
-	function Heap(){
+	 function Heap(){
 		// field: words[]
 		this.words = ['-'];
 
 		/* public int size()
 		 * @return: size of queue
 		 */
-		this.size = function() {
-			return this.words.length - 1;
-		};
+		 this.size = function() {
+		 	return this.words.length - 1;
+		 };
 
 		// helper function
 		this.exch = function(i,j) {
@@ -124,36 +126,36 @@ function Model(){
 		/* public void add(Object Word)
 		 * sorts ADT Word into priqueue/heap
 		 */
-		this.add = function(wordADT) {
-			this.words.push(wordADT);
-			this.swim(this.words.length -1);
-		};
+		 this.add = function(wordADT) {
+		 	this.words.push(wordADT);
+		 	this.swim(this.words.length -1);
+		 };
 
 		/* public Word top()
 		 * @return: returns max
 		 */
-		this.top = function(){
-			if (this.size() == 0) {return null;}
-			else {
-				var top = this.words[1];
-				return top;
-			}
-			
-		};
-	
+		 this.top = function(){
+		 	if (this.size() == 0) {return null;}
+		 	else {
+		 		var top = this.words[1];
+		 		return top;
+		 	}
+
+		 };
+
 		/* public Word pop()
 		 * @return: returns and deletes max
 		 */
-		this.pop = function() {
-			if (this.size() == 0) {
-				return null;
-			}
-			var max = this.words[1];
-			this.words.splice(1, 1);
-			this.exch(1, this.size());
-			this.sink(1);
-			return max;
-		};
+		 this.pop = function() {
+		 	if (this.size() == 0) {
+		 		return null;
+		 	}
+		 	var max = this.words[1];
+		 	this.words.splice(1, 1);
+		 	this.exch(1, this.size());
+		 	this.sink(1);
+		 	return max;
+		 };
 
 		// helper function
 		this.sink = function(index){
@@ -170,11 +172,11 @@ function Model(){
 				index = j;
 			}
 		};
-	
+
 		// helper function
 		this.swim = function(index){
 			var size = this.size();
-	
+
 			while (index > 1 && this.less(Math.floor(index/2),index)){
 				this.exch(Math.floor(index/2),index);
 				index = Math.floor(index/2);
@@ -191,21 +193,21 @@ function Model(){
 		if (d == "vertical") {
 			if (i < (ROWS - 1) && hl_grid[i+1][j] == "H") {
 				return true;
-			
+
 			} else if(i > 0 && hl_grid[i-1][j] == "H") {
 				return true;
-			
+
 			} else {
 				return false;
 			}
-		
+
 		} else if(d == "horizontal") {
 			if (j < (COLUMNS - 1) && hl_grid[i][j+1] == "H") {
 				return true;
-			
+
 			} else if(j > 0 && hl_grid[i][j-1] == "H") {
 				return true;
-			
+
 			} else {
 				return false;
 			}
@@ -221,10 +223,10 @@ function Model(){
 				if (hl_grid[i][j] == "H") {
 					if (i < (ROWS - 1) && hl_grid[i+1][j] == "H") {
 						return {d: "vertical", y:i, x:j};
-					
+
 					} else if (j < (COLUMNS - 1) && hl_grid[i][j+1] == "H") {
 						return {d:"horizontal", y:i, x:j};
-					
+
 					} else {
 						return {d:"single", y:i, x:j};
 
@@ -249,20 +251,20 @@ function Model(){
 
 	function getDictionary(){
 	//requesting and reading from file and if its found then reading from it
-	 	var bst = new BST();
-	    var rawFile = new XMLHttpRequest();
-	    var url = "input/dictionary.txt";
-	    rawFile.open("GET", url, true);
-	    rawFile.onreadystatechange = function ()
-	    {
-	        if(rawFile.readyState === 4)
-	        {
-	            if(rawFile.status === 200 || rawFile.status == 0)
-	            {
-	                var allText = rawFile.responseText;
+	var bst = new BST();
+	var rawFile = new XMLHttpRequest();
+	var url = "input/dictionary.txt";
+	rawFile.open("GET", url, true);
+	rawFile.onreadystatechange = function ()
+	{
+		if(rawFile.readyState === 4)
+		{
+			if(rawFile.status === 200 || rawFile.status == 0)
+			{
+				var allText = rawFile.responseText;
 	                //console.log(allText); //TODO make a data structure
 	                words = allText.split("\n");
-	               
+
 	                for (var i = 0; i <words.length; i++) {
 	                	if(words[i].length <=7){
 	                		bst.insert(words[i].length,new Word(words[i]));
@@ -276,7 +278,7 @@ function Model(){
 	        }
 	    }
 	    rawFile.send(null);
-		return bst;
+	    return bst;
 	}
 
 
@@ -313,10 +315,10 @@ function Controller(){
 		var y = getClick(e).y;
 		if (state == "letters") {
 			inputLetter(x, y);
-		
+
 		} else if (state == "highlight") {
 			highlight(getLetter(x, y).toUpperCase(), x, y);
-		
+
 		} else {
 			// model = new Model();
 			// view = new View();
@@ -331,7 +333,7 @@ function Controller(){
 		if (state == "letters") {
 			state = "highlight";
 			updatePStatus(state);
-		
+
 		} else if (state == "highlight") {
 			if (hl_check()) {
 				state = "result";
@@ -349,7 +351,7 @@ function Controller(){
 			findBestWords();
 
 		} else { resetN(); }
-			
+
 	}
 
 	// determines what state will be travelled to once
@@ -395,7 +397,7 @@ function Controller(){
 			// deletes highlight but keeps letter
 			// in the view
 			
-		
+
 		} else {
 
 			// create highlight in array and view
@@ -403,7 +405,7 @@ function Controller(){
 			model.hl_grid[y][x] = "H";
 			//console.table(model.hl_grid);
 		}
-	
+
 	}
 	
 	function inputLetter(x, y) {
@@ -419,7 +421,7 @@ function Controller(){
 				model.grid[y][x] = letter; // do this first
 				if (model.hl_grid[y][x] == "H") {
 					view.addHLetter(letter, x, y); // keep highlight
-				
+
 				} else {
 					view.addLetter(letter, x, y);
 				}
@@ -433,7 +435,7 @@ function Controller(){
 						model.grid[y][x] = letter.toLowerCase();
 						if (model.hl_grid[y][x] == "H") {
 							view.addHLetter(letter.toUpperCase(), x, y);
-						
+
 						} else {
 							view.addLetter(letter.toUpperCase(),x, y);
 						}
@@ -463,6 +465,7 @@ function Controller(){
 	// Static Method 
 
 	function hl_check() {
+		//console.log("poop");
 		var count = 0;
 		var hlCoords = [];
 		
@@ -478,8 +481,10 @@ function Controller(){
 		//console.log(hlCoords.length);
 
 		if (count < 1 || count > 7){
+			//console.log("poop")
 			return false;
 		} else {
+			//console.log("poop")
 			var vertical = true;
 			var horizontal = true;
 
@@ -499,29 +504,38 @@ function Controller(){
 				
 				for (var j = 0; j < hlCoords.length;j++){
 					if (hlCoords[i][1] != hlCoords[j][1]){
+						//console.log("poop");
 						vertical = false;
 					}
 				}
 			}
 			
 			if (horizontal == vertical){
+				//console.log("poop")
 				return false;
 			}
 
 			if (vertical == true){
 				if (hlCoords[hlCoords.length - 1][0] - hlCoords[0][0] + 1 != hlCoords.length){
-				
+					//console.log("poop")
 					return false;
+				
+				} else {
+					return true;
 				}
 
 			} 
-				if (horizontal == true) {
-				if (hlCoords[hlCoords.length - 1][1] - hlCoords[0][1] + 1 != hlCoords.length){
+			if (horizontal == true) {
 				
+				if (hlCoords[hlCoords.length - 1][1] - hlCoords[0][1] + 1 != hlCoords.length){
+					//console.log("poop")
 					return false;
-			}
 
-			return true;
+				} else {
+					return true;
+				}
+
+
 			}
 
 		}
@@ -550,8 +564,8 @@ function Controller(){
 		var rel_x = Math.floor(((x_Pos - canvasSize.left)/(deltaX)));
 		var rel_y = Math.floor(((y_Pos - canvasSize.top)/(deltaY)));
 		return {x:rel_x,
-			    y:rel_y
-			   };	
+			y:rel_y
+		};	
 	}
 
 
