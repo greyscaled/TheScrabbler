@@ -91,13 +91,15 @@ var BST=function (){
 	},
 
 	matchesPattern: function (key, regExp){
+		//var reg = new RegExp(regExp);
 		var strLengthN = searchREC(root,key).values;
-		console.table(strLengthN);
+		//console.table(strLengthN);
 		var matches = []; //tempary until we have a heap
+		var test = null;
 		for (var i = strLengthN.length - 1; i >= 0; i--) {
 			//console.log(strLengthN[i].match(regExp));
-			var test = (strLengthN[i].word.match(regExp));
-			if(test !=null){
+			test = (strLengthN[i].word.match(regExp));
+			if(test != null){
 				matches.push(strLengthN[i]);
 			}
 			

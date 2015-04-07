@@ -9,12 +9,14 @@ function Model(){
 	var grid = initGrid(ROWS, COLUMNS); // calls with global vars
 	var hl_grid = initGrid(ROWS, COLUMNS);
 	var words = [];
+	var heap = new Heap();
 
 	// Fields
 	this.grid = grid;
 	this.hl_grid = hl_grid; 
 	this.dictionary = getDictionary();
 	this.words = words;
+	this.heap = heap;
 	
 	// Public Methods
 
@@ -35,7 +37,8 @@ function Model(){
 	this.createRegex = function() {
 		var reMain = "";
 		var Direction = findHl();
-		console.log(Direction);
+		var count = 0;
+		//console.log(Direction);
 
 		// if vertical, create vertical regexs
 		if (Direction.d == "vertical") {
@@ -45,15 +48,15 @@ function Model(){
 						|| adj(i, Direction.x, "vertical")) {
 
 						reMain += this.grid[i][Direction.x];
-					}
+					}	count++;
 				} else if(this.hl_grid[i][Direction.x] == "H") {
 					
 					if (this.grid[i][Direction.x] == "") {
-						reMain+="[a-z]";
-					
+						reMain+="\\w";
+						count++;
 					} else {
 						reMain += this.grid[i][Direction.x];
-					}
+					}	count++;
 					
 				}
 			}
@@ -64,21 +67,26 @@ function Model(){
 						|| adj(Direction.y, j, "horizontal")) {
 
 						reMain += this.grid[Direction.y][j];
+						count++;
 					}
 				} else if(this.hl_grid[Direction.y][j] == "H") {
 
 					if (this.grid[Direction.y][j] == "") {
-						reMain +="[a-z]";
+						reMain +="\\w";
+						count++;
 					
 					} else {
 						reMain += this.grid[Direction.y][j];
+						count++;
 					}
 				}
 			}
 		}
 		var regm = new RegExp(reMain);
-		console.log(regm);
-		return regm;
+		//console.log(regm);
+		//console.log(count);
+		//console.log(regm.test("hey"));
+		return {key:count, regex:regm};
 	};
 	
 	
@@ -334,12 +342,14 @@ function Controller(){
 			}
 			else {
 				// invalid highlighting of cells
-				window.alert("Fix your shit");
+				window.alert("Please select a line");
 			}
 
-		} else {
-			resetN();
-		}
+		} else if (state == "result") {
+			findBestWords();
+
+		} else { resetN(); }
+			
 	}
 
 	// determines what state will be travelled to once
@@ -380,7 +390,7 @@ function Controller(){
 			// deletes highlight in array
 			model.hl_grid[y][x] = "";
 			view.addLetter(letter, x, y);
-			console.table(model.hl_grid);
+			//console.table(model.hl_grid);
 
 			// deletes highlight but keeps letter
 			// in the view
@@ -391,7 +401,7 @@ function Controller(){
 			// create highlight in array and view
 			view.highlight(letter, x, y);
 			model.hl_grid[y][x] = "H";
-			console.table(model.hl_grid);
+			//console.table(model.hl_grid);
 		}
 	
 	}
@@ -428,13 +438,23 @@ function Controller(){
 							view.addLetter(letter.toUpperCase(),x, y);
 						}
 						
-						console.table(model.grid); // TESTING
+						//console.table(model.grid); // TESTING
 					}
 				} else {
 					window.alert("Please select a valid letter");
 				}
 			}
 		}
+	}
+
+	function findBestWords() {
+		var pattern = model.createRegex();
+		console.log(pattern);
+		var matches = model.dictionary.matchesPattern(pattern.key, pattern.regex);
+		for (var i = 0; i < matches.length; i++) {
+			model.heap.add(matches[i]);
+		}
+		console.log(model.heap.top().word);
 	}
 
 	
@@ -454,8 +474,8 @@ function Controller(){
 				}
 			}
 		}
-		console.table(hlCoords);
-		console.log(hlCoords.length);
+		//console.table(hlCoords);
+		//console.log(hlCoords.length);
 
 		if (count < 1 || count > 7){
 			return false;
@@ -515,7 +535,7 @@ function Controller(){
 		var x_Pos = e.clientX;
 		var y_Pos = e.clientY;
 		var position = normalize(x_Pos,y_Pos);
-		console.log(position.x+","+position.y);
+		//console.log(position.x+","+position.y);
 		return {x: position.x, y: position.y};
 	}
 
