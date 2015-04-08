@@ -16,7 +16,7 @@ function Model() {
 	var hl_grid = initGrid(ROWS, COLUMNS);
 	var words = [];
 	var heap = new Heap();
-	var tiles 
+	var tiles = [];
 
 	// Fields
 	this.grid = grid;
@@ -24,6 +24,7 @@ function Model() {
 	this.dictionary = getDictionary();
 	this.words = words;
 	this.heap = heap;
+	this.tiles = tiles;
 	
 	// Public Methods
 
@@ -277,7 +278,6 @@ function Model() {
 				if ( (this.grid[x][j] == "") && // only if \w
 					(this.grid[x][j+1] != ""||  // and adj letter
 					this.grid[x][j-1] != "")) {
-					console.log("poop");
 					this.grabWord(x,j,"horizontal");  // grabs word
 				}
 				count++;
