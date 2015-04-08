@@ -405,24 +405,32 @@ function Controller(){
 
 	}
 
-	// determines what state will be travelled to once
-	// the Back button is pressed
+	/* public void onBackClick()
+	 * FSM
+	 * Reacts to HTML buttons
+	 * uses state string
+	 */
 	function onBackClick(){
-		if (state == "highlight"){
+		if (state == "highlight") {
 			state = "letters";
 			updatePStatus(state);
-		}
-		else if (state == "result"){
+		
+		} else if (state == "tiles") {
 			state = "highlight";
 			updatePStatus(state);
 		}
-
 	}
 
+	/* public void resetN()
+	 * refreshes browser
+	 * resets all forms and queries
+	 * restarts state machine
+	 */
 	function resetN() {
 		location.reload(); // refreshes window
 	
-		for (var i = 0; i < 7; i++) { // clears tile entries
+		// clears tile entry form
+		for (var i = 0; i < 7; i++) { 
 			form.elements[i].value = "";
 		}
 	
