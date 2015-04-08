@@ -1,6 +1,4 @@
 Meetings:
--Tuesday Thode: 10-->12:30
-
 -Milestones (Agile development)
 	#0 = Figure out The Preliminary Details
 	#1 = Grid GUI (Tuesday 24th)
