@@ -11,12 +11,13 @@ Meetings:
 		-Initialization [DONE]
 		-Highlight area [DONE]
 		-Scoring Tiles  
-		-Input play tiles [DONE]
+		-Input player tiles [DONE]
 	#5 = Protoype working for just input tiles  [DONE]
-	#6 = Finished Prototype
+	#6 = Finished Prototype    
 	#7 = Polish The product
 
 
+These will be deleted soon:
 - wrap findBestWord to a model module [done]
-- fix the null point error thing with the tries
+- fix the null point error thing with the tries [done]
 - change the the createRegex to send back an array of chars representing the regex [done]
