@@ -7,6 +7,7 @@ var ALPHABET = ['a','b','c','d','e','f',
 				,'m','n','o','p','q','r'
 				,'s','t','u','v','w'
 				,'x','y','z'];
+//console.log(/agg[eio]\b/.test("aggee")); DIS HOW REGEX WORK
 //==================================================================
 
 //==================MODEL CLASS=====================================
@@ -66,7 +67,7 @@ function Model() {
 					if (this.grid[i][Direction.x] == "") {
 						reMain+="\\w";
 						count++;
-						reggy.push(this.grid[i][Direction.x]);
+						reggy.push("\\w");
 					
 					} else {
 						reMain += this.grid[i][Direction.x];
@@ -101,9 +102,8 @@ function Model() {
 				}
 			}
 		}
-		console.log(reggy);
-		this.modifyRegex(Direction.y,Direction.x,Direction.d,reggy);
-		var regm = new RegExp(reMain);
+		var regm = this.modifyRegex(Direction.y,Direction.x,Direction.d,reggy);
+		//var regm = new RegExp(reMain);
 		//console.log(regm);
 		//console.log(count);
 		//console.log(regm.test("hey"));
@@ -253,7 +253,7 @@ function Model() {
 				
 				} else word = []; // reset word if not in a row
 			}
-			word.push(this.grid[i][j]);
+			word.push("?");
 			for (var x = j; x < COLUMNS; x++) {
 				if (this.grid[i][x] != "" && 
 					(this.hl_grid[i][x-1] == "H" ||
@@ -263,25 +263,51 @@ function Model() {
 				}
 			}
 		}
-		console.log(word);
+		return word.join("");
 	}
 
 	/* Takes main Regex and modifies it */
 	this.modifyRegex = function(i, j, d, reg) {
+		var trial = "";
+		var letlist = [];
+		var newreg = reg;
+
 		console.log("star of highlight: " + i +" "+j);
 		console.log("regex length: " + reg.length);
 		console.log("Direction: " + d);
 		var count = 0;  // for reg index
 		if (d == "vertical") {
 
-			for (var x = i; x < i + reg.length; x++) { // iterate each row
-				if ( (this.grid[x][j] == "") && // only if \w
+			// iterate each row looking for perpendicular words
+			for (var x = i; x < i + reg.length; x++) { 
+				if ( (this.grid[x][j] == "") && // only if \w 
 					(this.grid[x][j+1] != ""||  // and adj letter
 					this.grid[x][j-1] != "")) {
-					this.grabWord(x,j,"horizontal");  // grabs word
+					
+					// check is a string with '?' where highlight is
+					var check = this.grabWord(x,j,"horizontal");  // grabs word
+					
+					// check if each letter of alphabet forms a word
+					for (var lett = 0; lett < ALPHABET.length; lett++) {
+						trial = check.replace("?",ALPHABET[lett]);
+						if (this.dictionary.isWord(trial.length,trial)) {
+							letlist.push(ALPHABET[lett]);
+						}
+					}
+
+					// now modify the actual regex
+					var temp = "[";
+					for (var let = 0; let < letlist.length; let++) {
+						temp += letlist[let];
+					}
+					temp += "]";
+					newreg[count] = temp;
+					//console.log(new RegExp(newreg.join("")));
 				}
 				count++;
 			}
+			console.log(new RegExp(newreg.join("")+"\\b"));
+			return new RegExp(newreg.join("")+"\\b");
 		}
 	}
 
