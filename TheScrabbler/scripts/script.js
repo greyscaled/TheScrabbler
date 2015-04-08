@@ -436,6 +436,10 @@ function Controller(){
 	
 	}
 
+	/* public void updatePStatus(String state)
+	 * @param: a string representing the current FSM state
+	 * Sends state information to view to modify <p id=pstatus>
+	 */
 	function updatePStatus(state) {
 		var s_i = "Click on the grid below and enter letters.  When finished, press next.  If you wish to delete a letter, simply click on it and hit enter.";
 
@@ -453,7 +457,12 @@ function Controller(){
 		}
 
 	}
-	
+
+	/* public void highlight(char letter, int x, int y)
+	 * @param: letter is a letter on the grid
+	 * @param: x and y are 2D array indicies
+	 * highlights or de-highlights a cell on the grid
+	 */
 	function highlight(letter, x, y) {
 		if (model.hl_grid[y][x] == "H") {
 
@@ -476,6 +485,10 @@ function Controller(){
 
 	}
 	
+	/* public void inputLetter(int x, int y)
+	 * @params: x and y are 2D array indicies
+	 * Takes in user letter input to display on the grid
+	 */
 	function inputLetter(x, y) {
 
 		var letter = prompt("Enter a letter.\nEnter nothing to delete a letter.");
@@ -517,6 +530,9 @@ function Controller(){
 		}
 	}
 
+	/* public void findBestWords()
+	 * 
+	 */
 	function findBestWords() {
 		model.sortMatches(model.createMatches());
 		view.updateResult(model.getMatches(NUMWORDS));
@@ -525,10 +541,10 @@ function Controller(){
 	
 	// PRIVATE METHODS
 
-	// Static Method 
+	//--Static Method 
 
+	// checks if user made proper highlighting pattern
 	function hl_check() {
-		//console.log("poop");
 		var count = 0;
 		var hlCoords = [];
 		
@@ -540,14 +556,11 @@ function Controller(){
 				}
 			}
 		}
-		//console.table(hlCoords);
-		//console.log(hlCoords.length);
 
 		if (count < 1 || count > 7){
-			//console.log("poop")
 			return false;
+		
 		} else {
-			//console.log("poop")
 			var vertical = true;
 			var horizontal = true;
 
@@ -574,13 +587,11 @@ function Controller(){
 			}
 			
 			if (horizontal == vertical){
-				//console.log("poop")
 				return false;
 			}
 
 			if (vertical == true){
 				if (hlCoords[hlCoords.length - 1][0] - hlCoords[0][0] + 1 != hlCoords.length){
-					//console.log("poop")
 					return false;
 				
 				} else {
@@ -591,7 +602,6 @@ function Controller(){
 			if (horizontal == true) {
 				
 				if (hlCoords[hlCoords.length - 1][1] - hlCoords[0][1] + 1 != hlCoords.length){
-					//console.log("poop")
 					return false;
 
 				} else {
@@ -604,10 +614,12 @@ function Controller(){
 		}
 	}
 
+	// gets the letter from a position on the 2D grid array
 	function getLetter(x_Pos, y_Pos) {
 		return model.grid[y_Pos][x_Pos];
 	}
 
+	// gets coordinates of a user click on the canvas
 	function getClick(e){
 		var x_Pos = e.clientX;
 		var y_Pos = e.clientY;
@@ -616,19 +628,16 @@ function Controller(){
 		return {x: position.x, y: position.y};
 	}
 
+	// normalizes the user's click coordinates to the vancas
 	function normalize(x_Pos,y_Pos){
 		var canvasSize = canvasID.getBoundingClientRect();
-		
-
 		var deltaX = (canvasSize.right-canvasSize.left)/COLUMNS;
 		var deltaY = (canvasSize.bottom-canvasSize.top)/ROWS;
 
 		// rel_x and rel_y are the grid coordinates starting from (0,0) bottom left
 		var rel_x = Math.floor(((x_Pos - canvasSize.left)/(deltaX)));
 		var rel_y = Math.floor(((y_Pos - canvasSize.top)/(deltaY)));
-		return {x:rel_x,
-			y:rel_y
-		};	
+		return {x:rel_x, y:rel_y};	
 	}
 
 
