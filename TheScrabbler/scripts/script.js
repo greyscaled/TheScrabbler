@@ -347,7 +347,12 @@ function Controller(){
 
 	// PUBLIC FUNCTIONS 
 
-	// Static Functions
+	//--Static Functions
+
+	/* public void onGridClick(event)
+	 * @param e - an HTML click event
+	 * Sends click coordinates to other functions
+	 */
 	function onGridClick(e) {
 		var x = getClick(e).x;
 		var y = getClick(e).y;
@@ -364,8 +369,11 @@ function Controller(){
 		
 	}
 
-	// determines what state will be travelled to once
-	// the Next button is pressed
+	/* public void onNextClick()
+	 * FSM
+	 * Reacts to HTML buttons
+	 * uses state string
+	 */
 	function onNextClick() {
 
 		if (state == "letters") {
@@ -374,20 +382,24 @@ function Controller(){
 
 		} else if (state == "highlight") {
 			if (hl_check()) {
-				state = "result";
-				updatePStatus(state)
-				//getResult();
+				state = "tiles";
+				updatePStatus(state);
+				findBestWords();
 				model.createRegex();
-				//call model.getResult
-			}
-			else {
+			
+			} else {
 				// invalid highlighting of cells
 				window.alert("Please select a line");
 			}
 
+		} else if (state == "tiles") {
+			state = "result";
+			window.alert("Please input your tiles");
+
+
 		} else if (state == "result") {
-			findBestWords();
-			state = "finish";
+			//findBestWords();
+			//state = "finish";
 
 		} else { resetN(); }
 
@@ -421,11 +433,15 @@ function Controller(){
 
 		var s_h = "Click the cells of which you would like to form a word from your tiles.  The cells must be adjacent and in a vertical or horizontal line.  When you're done, click next.";
 
+		var s_t = "Enter your tiles. Don't leave any empty.<br>'-' indicates no tile.<br>'?' indicates blank tile.";
 		if (state == "letters") {
 			view.updatePStatus(s_i);
 
 		} else if (state == "highlight") {
 			view.updatePStatus(s_h);
+		
+		} else if (state == "tiles") {
+			view.updatePStatus(s_t);
 		}
 
 	}
@@ -496,7 +512,6 @@ function Controller(){
 	function findBestWords() {
 		model.sortMatches(model.createMatches());
 		view.updateResult(model.getMatches(NUMWORDS));
-
 	}
 
 	
@@ -690,7 +705,7 @@ function View(canvasID){
 	};
 
 	this.updatePStatus = function(string) {
-
+		document.getElementById('pstatus').innerHTML = string;
 	};
 
 	this.updateResult = function(results) {

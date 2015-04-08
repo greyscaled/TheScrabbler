@@ -37,7 +37,7 @@ div#one {
 }
 div#two {
 	padding-left: 40px;
-	height: 220px;
+	height: 208px;
 	width: 100px;
 	overflow: auto;
     
@@ -49,4 +49,11 @@ div#tileinput {
 
 input {
 	width: 25px;
+}
+
+p#pstatus {
+	width: 80%;
+	font-family: Verdana, Geneva, sans-serif;
+	text-align: left;
+	color: #5C0099;
 }
