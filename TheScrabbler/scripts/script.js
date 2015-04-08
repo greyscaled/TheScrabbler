@@ -85,6 +85,7 @@ function Model() {
 						|| adj(Direction.y, j, "horizontal")) {
 
 						reMain += this.grid[Direction.y][j];
+						reggy.push(this.grid[Direction.y][j]);
 						count++;
 				
 					}
@@ -93,10 +94,12 @@ function Model() {
 
 					if (this.grid[Direction.y][j] == "") {
 						reMain +="\\w";
+						reggy.push("\\w");
 						count++;
 
 					} else {
 						reMain += this.grid[Direction.y][j];
+						reggy.push(this.grid[Direction.y][j]);
 						count++;
 					}
 				}
@@ -262,6 +265,25 @@ function Model() {
 					word.push(this.grid[i][x]);
 				}
 			}
+		} else if (dir=="vertical") {
+			for (var y = 0; y < i; y++) {
+				if( (this.grid[y][j] != ""
+					&& this.grid[y+1][j] != "") ||
+					(this.hl_grid[y+1][j] == "H")) {
+						word.push(this.grid[y][j]);
+				
+				} else word = []; // reset word if not in a row
+			}
+			word.push("?");
+			for (var y = i; y < ROWS; y++) {
+				if (this.grid[y][j] != "" && 
+					(this.hl_grid[y-1][j] == "H" ||
+					this.grid[y-1][j] != "")) {
+
+					word.push(this.grid[y][j]);
+				}
+			}
+			console.log(word);
 		}
 		return word.join("");
 	}
@@ -308,7 +330,42 @@ function Model() {
 			}
 			console.log(new RegExp(newreg.join("")+"\\b"));
 			return new RegExp(newreg.join("")+"\\b");
+		
+		} else if (d == "horizontal") {
+
+			for (var y = j; y < j + reg.length; y++) { 
+				if ( (this.grid[i][y] == "") && // only if \w 
+					( ((i<= ROWS -1) && this.grid[i+1][y] != "")||  // and adj letter
+					  (( i > 0) && this.grid[i-1][y] != ""))) {
+					
+					// check is a string with '?' where highlight is
+					var check = this.grabWord(i,y,"vertical");  // grabs word
+					
+					// check if each letter of alphabet forms a word
+					for (var lett = 0; lett < ALPHABET.length; lett++) {
+						trial = check.replace("?",ALPHABET[lett]);
+						if (this.dictionary.isWord(trial.length,trial)) {
+							letlist.push(ALPHABET[lett]);
+						}
+					}
+
+					// now modify the actual regex
+					var temp = "[";
+					for (var let = 0; let < letlist.length; let++) {
+						temp += letlist[let];
+					}
+					temp += "]";
+					newreg[count] = temp;
+					//console.log(new RegExp(newreg.join("")));
+				}
+				count++;
+			}
+			console.log(new RegExp(newreg.join("")+"\\b"));
+			return new RegExp(newreg.join("")+"\\b");
+
 		}
+
+
 	}
 
 	// Checks for an adjacent highlight in the same direction
@@ -470,8 +527,9 @@ function Controller(){
 			if (hl_check()) {
 				state = "tiles";
 				updatePStatus(state);
-				findBestWords();
+				//findBestWords();
 				model.createRegex();
+				window.alert("Please input your tiles");
 			
 			} else {
 				// invalid highlighting of cells
@@ -479,12 +537,15 @@ function Controller(){
 			}
 
 		} else if (state == "tiles") {
-			state = "result";
-			window.alert("Please input your tiles");
+			getTiles();
+			if (tileCheck()) {state = "result";}
+			else {window.alert("error with tiles")}
+			console.log(tileCheck());
+			
 
 
 		} else if (state == "result") {
-			//findBestWords();
+			findBestWords();
 			//state = "finish";
 
 		} else { resetN(); }
@@ -504,8 +565,44 @@ function Controller(){
 		} else if (state == "tiles") {
 			state = "highlight";
 			updatePStatus(state);
+		
+		} else if (state == "result") {
+			state = "tiles";
+			updatePStatus(state);
+			view.clearResult();
+			window.alert("Please input your tiles");
 		}
 	}
+
+	/* public char[] getTiles()
+	 * @return an array of characters representing user's tiles
+	 */
+	 function getTiles() {
+	 		model.tiles = [];
+	 	for (var i = 0; i < 7; i++) {
+	 		var temp = form.elements[i].value;
+	 		if (/[A-Z]|[a-z]/.test(temp)) {temp = temp.toLowerCase();}
+	 		model.tiles.push(temp);
+	 		console.log(temp);
+	 	}
+	 }
+
+	 /* public boolean tileCheck()
+	  * @return true if input form is filled with valid chars
+	  */
+	  function tileCheck() {
+	  	for (var i = 0; i < 7; i++) {
+	  		if (form.elements[i].value == "" ||
+	  			form.elements[i].value == null) {
+	  			return false;
+	  			
+	  		} else if (!(/[a-z]\b|[A-Z]\b|\-|\?/.test(
+	  			form.elements[i].value))) {
+	  			return false;
+	  		}
+	  	}
+	  	return true;
+	  }
 
 	/* public void resetN()
 	 * refreshes browser
@@ -824,6 +921,10 @@ function View(canvasID){
 
 
 	};
+
+	this.clearResult = function() {
+		document.getElementById("results").innerHTML = "";
+	}
 
 
 } // end of View Class
