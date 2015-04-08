@@ -527,7 +527,7 @@ function Controller(){
 			if (hl_check()) {
 				state = "tiles";
 				updatePStatus(state);
-				//findBestWords();
+				findBestWords();
 				model.createRegex();
 				window.alert("Please input your tiles");
 			
@@ -545,7 +545,7 @@ function Controller(){
 
 
 		} else if (state == "result") {
-			findBestWords();
+			//findBestWords();
 			//state = "finish";
 
 		} else { resetN(); }
@@ -718,7 +718,7 @@ function Controller(){
 	 */
 	function findBestWords() {
 		model.sortMatches(model.createMatches());
-		view.updateResult(model.getMatches(NUMWORDS));
+		view.updateResult(model.getMatches(NUMWORDS)); // move later
 	}
 
 	
