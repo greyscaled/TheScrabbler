@@ -2,6 +2,11 @@
 var ROWS = 7;
 var COLUMNS = 7;
 var NUMWORDS = 20;
+var ALPHABET = ['a','b','c','d','e','f',
+				'g','h','i','j','k','l'
+				,'m','n','o','p','q','r'
+				,'s','t','u','v','w'
+				,'x','y','z'];
 //==================================================================
 
 //==================MODEL CLASS=====================================
@@ -11,6 +16,7 @@ function Model() {
 	var hl_grid = initGrid(ROWS, COLUMNS);
 	var words = [];
 	var heap = new Heap();
+	var tiles 
 
 	// Fields
 	this.grid = grid;
@@ -37,6 +43,7 @@ function Model() {
 
 	 this.createRegex = function() {
 	 	var reMain = "";
+	 	var reggy = [];
 	 	var Direction = findHl();
 	 	var count = 0;
 		//console.log(Direction);
@@ -49,7 +56,8 @@ function Model() {
 						|| adj(i, Direction.x, "vertical")) {
 
 						reMain += this.grid[i][Direction.x];
-					count++;
+						count++;
+						reggy.push(this.grid[i][Direction.x]);
 					}	
 			
 				} else if(this.hl_grid[i][Direction.x] == "H") {
@@ -57,9 +65,12 @@ function Model() {
 					if (this.grid[i][Direction.x] == "") {
 						reMain+="\\w";
 						count++;
+						reggy.push(this.grid[i][Direction.x]);
+					
 					} else {
 						reMain += this.grid[i][Direction.x];
 						count++;
+						reggy.push(this.grid[i][Direction.x]);
 					}	
 
 				}
@@ -89,6 +100,8 @@ function Model() {
 				}
 			}
 		}
+		console.log(reggy);
+		this.modifyRegex(Direction.y,Direction.x,Direction.d,reggy);
 		var regm = new RegExp(reMain);
 		//console.log(regm);
 		//console.log(count);
@@ -226,6 +239,53 @@ function Model() {
 
 	// Private Methods
 
+	/* used to grab an array of chars on a line
+	   that is perpendicular to the highlight */
+	this.grabWord = function(i, j, dir) {
+		var word = [];
+		if (dir == "horizontal") {
+			for (var x = 0; x < j; x++) {
+				if( (this.grid[i][x] != ""
+					&& this.grid[i][x+1] != "") ||
+					(this.hl_grid[i][x+1] == "H")) {
+						word.push(this.grid[i][x]);
+				
+				} else word = []; // reset word if not in a row
+			}
+			word.push(this.grid[i][j]);
+			for (var x = j; x < COLUMNS; x++) {
+				if (this.grid[i][x] != "" && 
+					(this.hl_grid[i][x-1] == "H" ||
+					this.grid[i][x-1] != "")) {
+
+					word.push(this.grid[i][x]);
+				}
+			}
+		}
+		console.log(word);
+	}
+
+	/* Takes main Regex and modifies it */
+	this.modifyRegex = function(i, j, d, reg) {
+		console.log("star of highlight: " + i +" "+j);
+		console.log("regex length: " + reg.length);
+		console.log("Direction: " + d);
+		var count = 0;  // for reg index
+		if (d == "vertical") {
+
+			for (var x = i; x < i + reg.length; x++) { // iterate each row
+				if ( (this.grid[x][j] == "") && // only if \w
+					(this.grid[x][j+1] != ""||  // and adj letter
+					this.grid[x][j-1] != "")) {
+					console.log("poop");
+					this.grabWord(x,j,"horizontal");  // grabs word
+				}
+				count++;
+			}
+		}
+	}
+
+	// Checks for an adjacent highlight in the same direction
 	function adj(i, j, d) {
 		if (d == "vertical") {
 			if (i < (ROWS - 1) && hl_grid[i+1][j] == "H") {
