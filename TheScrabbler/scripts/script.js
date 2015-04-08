@@ -29,6 +29,85 @@ function Model() {
 	
 	// Public Methods
 
+	/* public Word[] matchTiles()
+	 * Creates an array of Words that
+	 * can be made from the user's tiles
+	 */
+
+	this.hlIndicies = function () {
+		var start = findHl();
+		console.log(start);
+		var indicies = [];
+		if (start.d == "vertical") {
+			for (var i = start.y; i < ROWS; i++) {
+				if (this.hl_grid[i][start.x] == "H" &&
+					this.grid[i][start.x] == "") {
+
+					indicies.push(i - start.y);
+
+				}
+			}
+		} else if (start.d == "horizontal") {
+			for (var j = start.x; j < COLUMNS; j++) {
+				if (this.hl_grid[start.y][j] == "H" &&
+					this.grid[start.y][j] == "") {
+
+					indicies.push(j - start.x);
+				}
+			}
+		}
+		console.log(indicies);
+		return indicies;
+	}
+
+	this.matchTiles = function () {
+		var matches = [];
+		var temp = this.tiles.slice();
+		var tempheap = this.heap;
+		var tempword;
+		var index = -1;
+		var wildcard = -1;
+		var isMatch = false;
+		var indicies = this.hlIndicies();
+		console.log("INDICIES TO SCAN " + indicies)
+		for (var i = 0; i < this.heap.size(); i++) {
+			if (tempheap.size() > 0) { //&& isMatch == false) {
+				tempword = tempheap.pop();
+				temp = this.tiles.slice();
+				isMatch == true;
+				console.log("testing " + tempword.word);
+				for (var j = 0; j < indicies.length; j++) {
+					index = temp.indexOf(tempword.word.charAt(indicies[j]));
+					console.log("current stack " + temp);
+
+					if (index == -1) {
+						wildcard = temp.indexOf("?");
+						if (wildcard == -1) {
+							console.log("no wildcard");
+							isMatch = false;
+						
+						} else if (wildcard != -1) {
+							console.log("used wildcard");
+							temp.splice(wildcard, 1);
+							isMatch = true;
+						}
+					
+					} else if (index != -1) {
+						console.log("MATCH! " + index + " " + tempword.word.charAt(indicies[j]));
+						temp.splice(index, 1);
+						isMatch = true;
+					}
+					if (j == indicies.length - 1  && isMatch) {
+						console.log(tempword.word);
+						matches.push(tempword);
+					}
+				}
+			}
+		}
+		return matches;
+
+	}
+
 	/* public int getResult()
 	 * Driver/Stub for now?
 	 */
@@ -138,9 +217,10 @@ function Model() {
 	 	if (this.heap.size() >= number) { N = number;}
 	 	else {N = this.heap.size();}
 
-	 	for (var i = 1; i < N; i++) {
+	 	for (var i = 0; i < N; i++) {
 	 		result.push(this.heap.pop());
 	 	}
+	 	console.log("this is the result " + result);
 	 	return result;
 	 }
 
@@ -527,7 +607,7 @@ function Controller(){
 			if (hl_check()) {
 				state = "tiles";
 				updatePStatus(state);
-				findBestWords();
+				//findBestWords();
 				model.createRegex();
 				window.alert("Please input your tiles");
 			
@@ -537,6 +617,7 @@ function Controller(){
 			}
 
 		} else if (state == "tiles") {
+			findBestWords();
 			getTiles();
 			if (tileCheck()) {state = "result";}
 			else {window.alert("error with tiles")}
@@ -545,6 +626,7 @@ function Controller(){
 
 
 		} else if (state == "result") {
+			view.updateResult(model.matchTiles());
 			//findBestWords();
 			//state = "finish";
 
@@ -583,8 +665,8 @@ function Controller(){
 	 		var temp = form.elements[i].value;
 	 		if (/[A-Z]|[a-z]/.test(temp)) {temp = temp.toLowerCase();}
 	 		model.tiles.push(temp);
-	 		console.log(temp);
 	 	}
+	 	console.log(model.tiles);
 	 }
 
 	 /* public boolean tileCheck()
@@ -718,7 +800,7 @@ function Controller(){
 	 */
 	function findBestWords() {
 		model.sortMatches(model.createMatches());
-		view.updateResult(model.getMatches(NUMWORDS)); // move later
+		//view.updateResult(model.getMatches(NUMWORDS)); // move later
 	}
 
 	
