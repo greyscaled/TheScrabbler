@@ -12,13 +12,13 @@ Meetings:
 	#4 = Controller State Machine
 		-Initialization [DONE]
 		-Highlight area [DONE]
-		-Scoring Tiles
-		-Input play tiles
-	#5 = Protoype working for just scoring tiles  [DONE]
+		-Scoring Tiles  
+		-Input play tiles [DONE]
+	#5 = Protoype working for just input tiles  [DONE]
 	#6 = Finished Prototype
 	#7 = Polish The product
 
 
-- wrap findBestWord to a model module
+- wrap findBestWord to a model module [done]
 - fix the null point error thing with the tries
-- change the the createRegex to send back an array of chars representing the regex
+- change the the createRegex to send back an array of chars representing the regex [done]
