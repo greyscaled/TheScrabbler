@@ -90,7 +90,17 @@ var BST=function (){
 		}
 	},
 
-	matchesPattern: function (key, regExp){
+	isWord: function (key, regExp) {
+		var strN = searchREC(root,key).values;
+		for (var i = strN.length -1; i >= 0; i--) {
+			if (strN[i].word.match(regExp)) {
+				return true;
+			}
+		}
+		return false;
+	},
+
+	matchesPattern: function (key, regExp) {
 		//var reg = new RegExp(regExp);
 		var strLengthN = searchREC(root,key).values;
 		//console.table(strLengthN);
