@@ -114,7 +114,7 @@ var BST=function (){
 			}
 			
 		};
-		console.table(matches);
+		//console.table(matches);
 		return matches;
 	},
 
