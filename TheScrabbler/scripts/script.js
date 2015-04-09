@@ -605,7 +605,6 @@ function Controller(){
 			if (hl_check()) {
 				state = "tiles";
 				updatePStatus(state);
-				//findBestWords();
 				model.createRegex();
 				window.alert("Please input your tiles");
 			
@@ -615,18 +614,18 @@ function Controller(){
 			}
 
 		} else if (state == "tiles") {
-			findBestWords();
+		    findBestWords();
 			getTiles();
-			if (tileCheck()) {state = "result";}
-			else {window.alert("error with tiles")}
-			console.log(tileCheck());
+			if (tileCheck()) {
+				state = "result";
+				displayMatches();
+
+			} else {window.alert("error with tiles");}
 			
 
 
 		} else if (state == "result") {
-			view.updateResult(model.matchTiles());
-			//findBestWords();
-			//state = "finish";
+			
 
 		} else { resetN(); }
 
@@ -645,6 +644,7 @@ function Controller(){
 		} else if (state == "tiles") {
 			state = "highlight";
 			updatePStatus(state);
+			model.tiles = [];
 		
 		} else if (state == "result") {
 			state = "tiles";
@@ -799,6 +799,10 @@ function Controller(){
 	function findBestWords() {
 		model.sortMatches(model.createMatches());
 		//view.updateResult(model.getMatches(NUMWORDS)); // move later
+	}
+
+	function displayMatches () {
+		view.updateResult(model.matchTiles());
 	}
 
 	
