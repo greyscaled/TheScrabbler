@@ -29,7 +29,11 @@ function Model() {
 	
 	// Public Methods
 
-	// private
+	/* public Word[] matchTiles()
+	 * Creates an array of Words that
+	 * can be made from the user's tiles
+	 */
+
 	this.hlIndicies = function () {
 		var start = findHl();
 		console.log(start);
@@ -56,10 +60,6 @@ function Model() {
 		return indicies;
 	}
 
-	/* public Word[] matchTiles()
-	 * Creates an array of Words that
-	 * can be made from the user's tiles
-	 */
 	this.matchTiles = function () {
 		var matches = [];
 		var temp = this.tiles.slice();
@@ -493,7 +493,8 @@ function Model() {
 			}
 		}
 
-	
+	}
+
 	function initGrid(rows, columns) {
 		var grid = [];
 		for (var i = 0; i < rows; i++) {
@@ -614,7 +615,7 @@ function Controller(){
 
 		} else if (state == "tiles") {
 		    findBestWords();
-			setTiles();
+			getTiles();
 			if (tileCheck()) {
 				state = "result";
 
@@ -652,10 +653,10 @@ function Controller(){
 		}
 	}
 
-	/* public char[] setTiles()
+	/* public char[] getTiles()
 	 * @return an array of characters representing user's tiles
 	 */
-	 function setTiles() {
+	 function getTiles() {
 	 		model.tiles = [];
 	 	for (var i = 0; i < 7; i++) {
 	 		var temp = form.elements[i].value;
