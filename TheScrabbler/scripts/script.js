@@ -61,6 +61,7 @@ function Model() {
 	}
 
 	this.matchTiles = function () {
+		var N = this.heap.size();
 		var matches = [];
 		var temp = this.tiles.slice();
 		//var tempheap = this.heap;
@@ -70,7 +71,7 @@ function Model() {
 		var isMatch = false;
 		var indicies = this.hlIndicies();
 		console.log("INDICIES TO SCAN " + indicies)
-		for (var i = 0; i < this.heap.size(); i++) {
+		for (var i = 0; i < N; i++) {
 			if (this.heap.size() > 0) { //&& isMatch == false) {
 				tempword = this.heap.pop();
 				temp = this.tiles.slice();
