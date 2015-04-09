@@ -21,3 +21,5 @@ These will be deleted soon:
 - wrap findBestWord to a model module [done]
 - fix the null point error thing with the tries [done]
 - change the the createRegex to send back an array of chars representing the regex [done]
+
+-Curtis is awesome
