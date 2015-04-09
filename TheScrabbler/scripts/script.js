@@ -29,11 +29,7 @@ function Model() {
 	
 	// Public Methods
 
-	/* public Word[] matchTiles()
-	 * Creates an array of Words that
-	 * can be made from the user's tiles
-	 */
-
+	// private
 	this.hlIndicies = function () {
 		var start = findHl();
 		console.log(start);
@@ -60,6 +56,10 @@ function Model() {
 		return indicies;
 	}
 
+	/* public Word[] matchTiles()
+	 * Creates an array of Words that
+	 * can be made from the user's tiles
+	 */
 	this.matchTiles = function () {
 		var matches = [];
 		var temp = this.tiles.slice();
@@ -493,8 +493,7 @@ function Model() {
 			}
 		}
 
-	}
-
+	
 	function initGrid(rows, columns) {
 		var grid = [];
 		for (var i = 0; i < rows; i++) {
@@ -615,7 +614,7 @@ function Controller(){
 
 		} else if (state == "tiles") {
 		    findBestWords();
-			getTiles();
+			setTiles();
 			if (tileCheck()) {
 				state = "result";
 
@@ -653,10 +652,10 @@ function Controller(){
 		}
 	}
 
-	/* public char[] getTiles()
+	/* public char[] setTiles()
 	 * @return an array of characters representing user's tiles
 	 */
-	 function getTiles() {
+	 function setTiles() {
 	 		model.tiles = [];
 	 	for (var i = 0; i < 7; i++) {
 	 		var temp = form.elements[i].value;
@@ -1000,7 +999,9 @@ function View(canvasID){
 							+ temp.score
 							+ "<br/>";
 		}
-		document.getElementById("results").innerHTML = returnstring;
+		if (returnstring != "") {
+			document.getElementById("results").innerHTML = returnstring;
+		} else {document.getElementById("results").innerHTML = "No Matches";}
 
 
 	};
