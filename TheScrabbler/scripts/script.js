@@ -618,14 +618,13 @@ function Controller(){
 			getTiles();
 			if (tileCheck()) {
 				state = "result";
-				displayMatches();
 
 			} else {window.alert("error with tiles");}
 			
 
 
 		} else if (state == "result") {
-			
+			displayMatches();
 
 		} else { resetN(); }
 
