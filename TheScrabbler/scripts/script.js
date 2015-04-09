@@ -63,7 +63,7 @@ function Model() {
 	this.matchTiles = function () {
 		var matches = [];
 		var temp = this.tiles.slice();
-		var tempheap = this.heap;
+		//var tempheap = this.heap;
 		var tempword;
 		var index = -1;
 		var wildcard = -1;
@@ -71,23 +71,21 @@ function Model() {
 		var indicies = this.hlIndicies();
 		console.log("INDICIES TO SCAN " + indicies)
 		for (var i = 0; i < this.heap.size(); i++) {
-			if (tempheap.size() > 0) { //&& isMatch == false) {
-				tempword = tempheap.pop();
+			if (this.heap.size() > 0) { //&& isMatch == false) {
+				tempword = this.heap.pop();
 				temp = this.tiles.slice();
-				isMatch == true;
-				console.log("testing " + tempword.word);
-				for (var j = 0; j < indicies.length; j++) {
+				isMatch = true;
+				//console.log("testing " + tempword.word);
+				for (var j = 0; j < indicies.length && isMatch; j++) {
 					index = temp.indexOf(tempword.word.charAt(indicies[j]));
-					console.log("current stack " + temp);
+					//console.log("current stack " + temp);
 
 					if (index == -1) {
 						wildcard = temp.indexOf("?");
 						if (wildcard == -1) {
-							console.log("no wildcard");
 							isMatch = false;
 						
 						} else if (wildcard != -1) {
-							console.log("used wildcard");
 							temp.splice(wildcard, 1);
 							isMatch = true;
 						}
@@ -98,7 +96,7 @@ function Model() {
 						isMatch = true;
 					}
 					if (j == indicies.length - 1  && isMatch) {
-						console.log(tempword.word);
+						console.log("matched word: " + tempword.word);
 						matches.push(tempword);
 					}
 				}
