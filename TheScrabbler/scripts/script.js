@@ -91,7 +91,7 @@ function Model() {
 						}
 					
 					} else if (index != -1) {
-						console.log("MATCH! " + index + " " + tempword.word.charAt(indicies[j]));
+						//console.log("MATCH! " + index + " " + tempword.word.charAt(indicies[j]));
 						temp.splice(index, 1);
 						isMatch = true;
 					}
@@ -386,7 +386,7 @@ function Model() {
 					
 					// check is a string with '?' where highlight is
 					var check = this.grabWord(x,j,"horizontal");  // grabs word
-					
+					letlist = [];
 					// check if each letter of alphabet forms a word
 					for (var lett = 0; lett < ALPHABET.length; lett++) {
 						trial = check.replace("?",ALPHABET[lett]);
@@ -418,7 +418,7 @@ function Model() {
 					
 					// check is a string with '?' where highlight is
 					var check = this.grabWord(i,y,"vertical");  // grabs word
-					
+					letlist = [];
 					// check if each letter of alphabet forms a word
 					for (var lett = 0; lett < ALPHABET.length; lett++) {
 						trial = check.replace("?",ALPHABET[lett]);
