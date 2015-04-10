@@ -191,47 +191,30 @@ function Model() {
 		return {key:count, regex:regm};
 	};
 	
-	/* public Word[] getMatches()
-	 * @return: array of Words sorted
-	 */
-
 	 this.createMatches = function() {
 	 	var regex = this.createRegex();
 	 	return this.dictionary.matchesPattern(regex.key, regex.regex);
 
 	 }
 
+
+	 /* public void sortMatches()
+	  * @param: Word[]
+	  * sorts words by score in a queue/heap
+	  */
 	 this.sortMatches = function(matches) {
 	 	for (var i = 0; i < matches.length; i++) {
 	 		this.heap.add(matches[i]);
 	 	}
 
-
 	 }
 
-	 this.getMatches = function (number) {
-	 	var result = [];
-	 	var N = 0;
-
-	 	if (this.heap.size() >= number) { N = number;}
-	 	else {N = this.heap.size();}
-
-	 	for (var i = 0; i < N; i++) {
-	 		result.push(this.heap.pop());
-	 	}
-	 	console.log("this is the result " + result);
-	 	return result;
-	 }
-
-	
-	
 	//--Static Methods
 
 	/* private Class Heap
 	 * public: size, add, top, pop
 	 * private: exch, less, sink, swim
 	 */
-
 	 function Heap(){
 		// field: words[]
 		this.words = ['-'];
@@ -387,8 +370,8 @@ function Model() {
 					
 					// check is a string with '?' where highlight is
 					var check = this.grabWord(x,j,"horizontal");  // grabs word
-					letlist = [];
-					// check if each letter of alphabet forms a word
+					letlist = [];								 // if one exists
+					// check if each letter of alphabet forms a valid word
 					for (var lett = 0; lett < ALPHABET.length; lett++) {
 						trial = check.replace("?",ALPHABET[lett]);
 						if (this.dictionary.isWord(trial.length,trial)) {
@@ -396,18 +379,18 @@ function Model() {
 						}
 					}
 
-					// now modify the actual regex
+					// now modify the actual regex accounting for 
+					// members of the alaphabet forming a valid word
 					var temp = "[";
 					for (var let = 0; let < letlist.length; let++) {
 						temp += letlist[let];
 					}
 					temp += "]";
 					newreg[count] = temp;
-					//console.log(new RegExp(newreg.join("")));
 				}
 				count++;
 			}
-			console.log(new RegExp(newreg.join("")+"\\b"));
+			console.log(new RegExp(newreg.join("")+"\\b")); // testing
 			return new RegExp(newreg.join("")+"\\b");
 		
 		} else if (d == "horizontal") {
@@ -798,7 +781,6 @@ function Controller(){
 	 */
 	function findBestWords() {
 		model.sortMatches(model.createMatches());
-		//view.updateResult(model.getMatches(NUMWORDS)); // move later
 	}
 
 	function displayMatches () {
