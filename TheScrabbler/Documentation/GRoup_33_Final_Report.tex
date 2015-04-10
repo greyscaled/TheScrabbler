@@ -27,121 +27,120 @@
 \tableofcontents
 \newpage
 %Design Documentation\\
-\section{MIS \\}
-\subsection{Class BST \\\\}
-\textbf{public BST()\\}
 
-Creates an empty Binary search tree.\\\\
-\textbf{public void insert(int key, Word value) \\}
+%---------------------SECTION 1: MIS--------
+\section{MIS (Public API)}
 
-Given a key for the length of the string,  the string value will be associated with the key given;  values with the same key will not be over written.\\\\
+%-----BST
+\subsection{Class BST}
+
+\begin{tabular}{|p{0.4 \textwidth}|p{0.5\textwidth}|}
+\hline
+\textbf{public BST()} & Creates an empty Binary search tree \\
+\hline
+\textbf{public void insert(int key, Word value)} & Given a key for the length of the string,  the string value will be associated with the key given;  values with the same key will not be over written.\\
+\hline
+\textbf{public Word search(int key, String word)} & Given a key of the length of the string and the word we wish to find, we will return the reference to an object that holds both the word itself and the score that is associated with the word.\\
+\hline
+\textbf{public  boolean isWord(int key, String word)} & Determines if the string inputted belongs to our list of words.\\
+\hline
+\textbf{public Word[] matchesPattern(int key, String[] regExpArray)} & Given the length of the string in key, will return all the strings where each string character matches the same index of regExpArray.\\
+\hline
+\end{tabular}
+
+
+%------------TrieST
+\subsection{Class TrieST}
+
+\begin{tabular}{|p{0.4 \textwidth}|p{0.5\textwidth}|}
+\hline
+\textbf{public TrieST()} & Creates an empty trie with the first node being empty\\
+\hline
+\textbf{public void insertWord(Word word)} & Will add the given word in the proper location into the trie. \\
+\hline
+\textbf{public Word search(String word)} & Will return the Word abstract data type that is associated with the string word\\
+\hline
+\textbf{public Word[] matchPattern(String[] regExpArray)} & Returns all the words in the trie that match the pattern of the regular expression\\
+\hline
+\end{tabular}
+
+%------Word ADT
+\subsection{Class Word}
+
+\begin{tabular}{|p{0.4 \textwidth}|p{0.5\textwidth}|}
+\hline
+\textbf{public Word(String word)} & Creates an object with 2 fields, one that stores the String word and one that is the score of the object based on the rules of the scrabble board.\\
+\hline
+\textbf{public int setScore(int val)} & Sets the score value of the word to the desired value. \\
+\hline
+\end{tabular}
+
+%--- Model
+\subsection{Class Model}
+\begin{tabular}{|p{0.4 \textwidth}|p{0.5\textwidth}|}
+\hline
+\textbf{public Model()} & Creates a new Model object, storing information of the board like what tiles are currently on the grid, what spaces we have highlighted, and holds the list of words that are valid.\\
+\hline
+\textbf{public Word[] matchTiles()} & Creates an array of the Words, This will represent the words that we can make given the state of the board and the users tiles.\\
+\hline
+\textbf{public String[] createRegex()} & Will create an array where each element will correspond to a regular expression for one character of a word. This is determined based on what pieces are currently on the board.\\
+\hline
+\textbf{public Word[] getMatches(int number)} & Creates an array of size number or less in a sorted order where the 0 index will have the highest score value.\\
+\hline
+\end{tabular}
+
+%-----Controller
+\subsection{Class Controller}
+\begin{tabular}{|p{0.4 \textwidth}|p{0.5\textwidth}|}
+\hline
 %
-\textbf{public Word search(int key, String word)\\}
-
-Given a key of the length of the string and the word we wish to find, we will return the reference to an object that holds both the word itself and the score that is associated with the word.\\\\
+\textbf{public void Controller()} & Creates a new controller for the interface.html page, this is only instantiated when the page loads.\\
 %
-\textbf{public  boolean isWord(int key, String word)\\}
-
-Determines if the string inputted belongs to our list of words.\\\\
+\hline
+\textbf{public static void onGridClick(htmlClickEvent e)} & Depending on the state the controller this will either add either ask to input a letter or will highlight the square that was clicked.\\
 %
-\textbf{public Word[] matchesPattern(int key, String[] regExpArray)\\}
-
-Given the length of the string in key, will return all the strings where each string character matches the same index of regExpArray.\\\\
+\hline
+\textbf{public static void onNextClick()} & Will change the state of the website one forward and will update the view to match our new state.\\
 %
-\subsection{Class TrieST \\\\}
-\textbf{public TrieST()\\}
-
-Creates an empty trie with the first node being empty\\\\
-\textbf{public void insertWord(Word word)\\}
-
-Will add the given word in the proper location into the trie.\\\\
+\hline
+\textbf{public static void onBackClick()} & Will change the state of the website one back and will update the view to match our new state.\\
 %
-\textbf{public Word search(String word)\\}
-
-Will return the Word abstract data type that is associated with the string word\\\\
-\textbf{public Word[] matchPattern(String[] regExpArray)\\}
-
-Returns all the words in the trie that match the patter of the regular expression\\\\
+\hline
+\textbf{public void setTiles()} & Will retrieve the inputted tiles from the HTML input boxes and will set the field of in model to be a list of these tiles.\\
 %
-\subsection{Class Word \\\\}
-\textbf{public Word(String word)\\}
-
-Creates an object with 2 fields, one that stores the String word and one that is the score of the object based on the rules of the scrabble board.\\\\
-
-\textbf{public int setScore(int val)}
-
-Sets the score value of the word to the desired value.
+\hline
+\textbf{public void resetN()} & Button event handler to handle when we click the reset button. This will simply refresh the page.\\
 %
-\subsection{Class Model \\\\}
-\textbf{public Model()\\}
+\hline
+\end{tabular}
 
-Creates a new Model object, storing information of the board like what tiles are currently on the grid, what spaces we have highlighted, and holds the list of words that are valid.\\\\
+%---- View
+\subsection{Class View}
+\begin{tabular}{|p{0.4 \textwidth}|p{0.5\textwidth}|}
+\hline
+\textbf{public View(Canvas  canvasID)} & Uses the canvas given to create a new 7x7 scrabble board view.\\
 %
-\textbf{public Word[] matchTiles()\\}
-
-Creates an array of the Words, This will represent the words that we can make given the state of the board and the users tiles.\\\\
-\textbf{public String[] createRegex()\\}
-
-Will create an array where each element will correspond to a regular expression for one character of a word. This is determined based on what pieces are currently on the board.\\\\
+\hline
+\textbf{public void addLetter(char letter, int x, int y)} & Will add a Letter to our canvas at the position of x and y.\\
 %
-\textbf{public Word[] getMatches(int number)\\}
-
-Creates an array of size number or less in a sorted order where the 0 index will have the highest score value.\\\\
+\hline
+\textbf{public void addHLetter(char letter,int x, int y)} & Adds a highlighted to the screen.\\
 %
-\subsection{Class Controller \\\\}
+\hline
+\textbf{public void highlight(char letter, int x, int y)} & Adds a black highlighted square to the screen.\\
 %
-\textbf{public void Controller()\\}
-
-Creates a new controller for the interface.html page, this is only instantiated when the page loads.\\\\
+\hline
+\textbf{public void updatePStatus(String string)} & Updates the message displayed to the user with the string passed in.\\
 %
-\textbf{public static void onGridClick(htmlClickEvent e)\\}
+\hline
+\textbf{public void updateResult(String[] results)} & Updates the result message box with the values from results.\\
+\hline
+\end{tabular}
 
-Depending on the state the controller this will either add either ask to input a letter or will highlight the square that was clicked.\\\\
-%
-\textbf{public static void onNextClick()\\}
-
-Will change the state of the website one forward and will update the view to match our new state.\\\\
-%
-\textbf{public static void onBackClick()\\}
-
-Will change the state of the website one back and will update the view to match our new state.\\\\
-%
-\textbf{public void setTiles()\\}
-
-Will retrieve the inputted tiles from the HTML input boxes and will set the field of in model to be a list of these tiles.\\\\
-%
-\textbf{public void resetN()\\}
-
-Button event handler to handle when we click the reset button. This will simply refresh the page.\\\\
-%
-\subsection{Class View \\\\}
-\textbf{public View(Canvas  canvasID)\\}
-
-Uses the canvas given to create a new 7x7 scrabble board view.\\\\
-%
-\textbf{public void addLetter(char letter, int x, int y)\\}
-
-Will add a Letter to our canvas at the position of x and y.\\\\
-%
-\textbf{public void addHLetter(char letter,int x, int y)\\}
-
-Adds a highlighted to the screen.\\\\
-%
-\textbf{public void highlight(char letter, int x, int y)\\}
-
-Adds a black highlighted square to the screen.\\\\
-%
-\textbf{public void updatePStatus(String string)\\}
-
-Updates the message displayed to the user with the string passed in.\\\\
-%
-\textbf{public void updateResult(String[] results)\\}
-
-Updates the result message box with the values from results.\\\\
-\newpage
 %---------------------------------------MID----------------------------------------------------
-\section{MID\\}
-\subsection{Class BST \\}
+\newpage
+\section{MID}
+\subsection{Class BST }
 
 A BST That is used to separate the strings of different lengths. The value of the BST is a trie symbol table that will hold all of the words of this length\\\\
 \textbf{Fields\\}
@@ -255,7 +254,7 @@ Creates a grid of size rows X columns initialized to to an empty square.
 
 Reads in from the data sheet of possible words for each word, it will create a new Word Object and will insert it into the BST.\\\\
 
-\subsection{private class Heap\\\\}
+\subsection{private class Heap}
 \textbf{Uses this.word from parent model\\\\}
 %
 \textbf{private Heap()\\}
@@ -294,7 +293,7 @@ Will compare the parent Word at index to its children and will swap and repeat i
 
 Will compare the child Word at index to its parent and will swap and repeat if the score of one of the parent is smaller then the child\\\\
 
-\subsection{Class Controller \\}
+\subsection{Class Controller }
 \textbf{Fields\\}
 \begin{itemize}
 	\item Canvas canvasID: the reference to the Canvas on the html, used to draw the grid
