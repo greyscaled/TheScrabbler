@@ -36,7 +36,6 @@ function Model() {
 
 	this.hlIndicies = function () {
 		var start = findHl();
-		console.log(start);
 		var indicies = [];
 		if (start.d == "vertical") {
 			for (var i = start.y; i < ROWS; i++) {
@@ -56,7 +55,6 @@ function Model() {
 				}
 			}
 		}
-		console.log(indicies);
 		return indicies;
 	}
 
@@ -70,7 +68,6 @@ function Model() {
 		var wildcard = -1;
 		var isMatch = false;
 		var indicies = this.hlIndicies();
-		console.log("INDICIES TO SCAN " + indicies)
 		for (var i = 0; i < N; i++) {
 			if (this.heap.size() > 0) { //&& isMatch == false) {
 				tempword = this.heap.pop();
@@ -97,7 +94,6 @@ function Model() {
 						isMatch = true;
 					}
 					if (j == indicies.length - 1  && isMatch) {
-						console.log("matched word: " + tempword.word);
 						matches.push(tempword);
 					}
 				}
@@ -107,14 +103,7 @@ function Model() {
 
 	}
 
-	/* public int getResult()
-	 * Driver/Stub for now?
-	 */
-	 this.getResult = function () {
-	 	var regExp = /a\w\w\w/g; 
-	 	var results = (this.dictionary).matchesPattern(4, regExp);
-	 	return results[0].score;
-	 };
+
 
 	/* public String createRegex()
 	 *  may later be modified into char[]
@@ -188,6 +177,7 @@ function Model() {
 		//console.log(regm);
 		//console.log(count);
 		//console.log(regm.test("hey"));
+		console.log(regm);
 		return {key:count, regex:regm};
 	};
 	
@@ -345,7 +335,6 @@ function Model() {
 					word.push(this.grid[y][j]);
 				}
 			}
-			console.log(word);
 		}
 		return word.join("");
 	}
@@ -355,18 +344,14 @@ function Model() {
 		var trial = "";
 		var letlist = [];
 		var newreg = reg;
-
-		console.log("star of highlight: " + i +" "+j);
-		console.log("regex length: " + reg.length);
-		console.log("Direction: " + d);
 		var count = 0;  // for reg index
 		if (d == "vertical") {
 
 			// iterate each row looking for perpendicular words
 			for (var x = i; x < i + reg.length; x++) { 
 				if ( (this.grid[x][j] == "") && // only if \w 
-					(this.grid[x][j+1] != ""||  // and adj letter
-					this.grid[x][j-1] != "")) {
+					(((j < COLUMNS - 1) && this.grid[x][j+1] != "")||  // and adj letter
+					((j > 0) && this.grid[x][j-1] != ""))) {
 					
 					// check is a string with '?' where highlight is
 					var check = this.grabWord(x,j,"horizontal");  // grabs word
@@ -387,17 +372,18 @@ function Model() {
 					}
 					temp += "]";
 					newreg[count] = temp;
+					//console.log(newreg[count] );
 				}
 				count++;
 			}
-			console.log(new RegExp(newreg.join("")+"\\b")); // testing
-			return new RegExp(newreg.join("")+"\\b");
+			console.log(newreg);
+			return newreg;
 		
 		} else if (d == "horizontal") {
 
 			for (var y = j; y < j + reg.length; y++) { 
 				if ( (this.grid[i][y] == "") && // only if \w 
-					( ((i<= ROWS -1) && this.grid[i+1][y] != "")||  // and adj letter
+					( ((i< ROWS -1) && this.grid[i+1][y] != "")||  // and adj letter
 					  (( i > 0) && this.grid[i-1][y] != ""))) {
 					
 					// check is a string with '?' where highlight is
@@ -418,12 +404,11 @@ function Model() {
 					}
 					temp += "]";
 					newreg[count] = temp;
-					//console.log(new RegExp(newreg.join("")));
+					//console.log(newreg[count] );
 				}
 				count++;
 			}
-			console.log(new RegExp(newreg.join("")+"\\b"));
-			return new RegExp(newreg.join("")+"\\b");
+			return newreg;
 
 		}
 
@@ -591,24 +576,25 @@ function Controller(){
 				updatePStatus(state);
 				model.createRegex();
 				window.alert("Please input your tiles");
-			
+				//findBestWords();
+				//getTiles();
+				//if (tileCheck()) {
+					//state = "result";
+					//displayMatches();
+				//} else {window.alert("error with tiles");}
+				
 			} else {
-				// invalid highlighting of cells
+					// invalid highlighting of cells
 				window.alert("Please select a line");
 			}
-
+		
 		} else if (state == "tiles") {
-		    findBestWords();
+			findBestWords();
 			getTiles();
 			if (tileCheck()) {
 				state = "result";
-
-			} else {window.alert("error with tiles");}
-			
-
-
-		} else if (state == "result") {
-			displayMatches();
+				displayMatches();
+			}
 
 		} else { resetN(); }
 
@@ -628,10 +614,12 @@ function Controller(){
 			state = "highlight";
 			updatePStatus(state);
 			model.tiles = [];
-		
+			model.heap = new Heap();
+
 		} else if (state == "result") {
 			state = "tiles";
 			updatePStatus(state);
+			//model.tiles = [];
 			view.clearResult();
 			window.alert("Please input your tiles");
 		}

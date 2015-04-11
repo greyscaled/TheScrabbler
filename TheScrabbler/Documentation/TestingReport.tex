@@ -1,5 +1,5 @@
 %--------------------------------TOP LEVEL SHIT-------------------------------------------------------------------------------
-\documentclass[11pt, oneside]{report}   
+\documentclass[11pt, oneside]{article}   
 \usepackage{geometry}                		
 \geometry{letterpaper}                   		
 \usepackage{graphicx}    
@@ -42,15 +42,16 @@ This document is organized with each chapter dedicated to a different testing pr
 %------------------------------------------------------CHAPTER 1-----------------------------------------------------------------
 %----------------------------------------------------------------------------------------------------------------------------------------
 
-\chapter{Unit Testing}
+\section{Unit Testing}
 %-- Intro paragraph
 The manner in which each of these tests were done was systemically consist.  Specifically, each unit was tested on its own with necessary stubs and drivers.  This sort of testing is considered to be whitebox and will verify the method on its own, but will not imply integration/system testing (to be done in other ways).  This manner of testing will verify the \textsc{functional correctness} of the requirements for the particular method, and only that method.
 
 %-----------------------Chapter 1, section 1: Model----%
-\section{Model}
+\subsection{Model}
+The model contains methods that generate regular expression based off of how the user initializes the board with letters and highlighting.  These methods use the BST and Trie table data structures.  As such, these methods are very complex.  In order to verify that the methods are working separately from the data structures (and especially since data structures are often changeable qualities of a software product), these methods were tested with drivers and stubs.  A Testing.html file was setup and any values that were to reside in the data structures or be given to these methods by external methods were hard coded in.  
 
 %-----hl Indicies
-\begin{table}[H]
+\begin{table}[hl]
 \caption{private method this.hlIndicies}
 \begin{center}
 \begin{tabular}{|p{0.25\textwidth}|p{0.3\textwidth}|p{0.3\textwidth}|p{0.05\textwidth}|}
@@ -70,7 +71,7 @@ d: ``horizontal" x:0, y:0 with 7 highlighted cell and a letter in the first and 
 \end{table}%
 
 %-----match Tiles
-\begin{table}[H]
+\begin{table}[hl]
 \caption{public method this.matchTiles}
 \begin{center}
 \begin{tabular}{|p{0.25\textwidth}|p{0.3\textwidth}|p{0.3\textwidth}|p{0.05\textwidth}|}
@@ -94,7 +95,7 @@ words in heap: side, dies, ides, peep. Horizontal highlight from [0][0] to [0][3
 \end{table}%
 
 %----create Regex
-\begin{table}[H]
+\begin{table}[hl]
 \caption{public method this.matchTiles}
 \begin{center}
 \begin{tabular}{|p{0.25\textwidth}|p{0.3\textwidth}|p{0.3\textwidth}|p{0.05\textwidth}|}
@@ -113,15 +114,59 @@ cells[2][2] to [5][2] highlight, an a in cell [2][2], a b in cell [3][1] & / a [
 \label{default}
 \end{table}%
 
-%-----------------------Chapter 1, section 2: View----%
-\section{View}
+\begin{figure}[hl]
+\caption{console log of regex generater testing an edge case}
+\includegraphics[width=0.95\textwidth]{regex.png}
+\end{figure}
 
+%-----------------------Chapter 1, section 2: View----%
+\section{System \& Integration Testing (BlackBox)}
+Both the view and the controller are a lot harder to test in a white-box driver/stub system.  As such, they were black-box tested after integration with the model.  The view itself doesn't contain many methods and mostly deals with drawing the canvas.  We haven't implemented many css scalable features, so there isn't too much to test as of yet.  The controller is tested via canonical sequences of the HTML buttons (back, next, reset).  
+
+\subsection{View}
+The view contains methods that update:
+\begin{enumerate}[1)]
+	\item The HTML canvas (the grid the user sees)
+	\item The paragraph telling the user what to do
+	\item The result div beside the grid
+\end{enumerate}
+
+
+\begin{figure}[hl]
+\caption{The View}
+\includegraphics[width=0.95\textwidth]{view.png}
+\end{figure}
 
 
 
 
 %-----------------------Chapter 1, section 3: Controller----%
-\section{Controller}
+\subsection{Controller}
+The controller is responsible for calling the appropriate function based on the buttons the user presses.  These buttons are:
+\begin{enumerate}[1)]
+	\item back
+	\item next
+	\item reset
+\end{enumerate}
+
+Additionally, it also listens to the form query representing the user's tiles (the input boxes on the bottom right), as well as sends other document information to the View and Model as necessary.  This is to minimize the interaction the Model and View have with the HTML to a uni-directional uses relationship and modularize/separate concerns.  
+
+\begin{figure}[hl]
+\caption{Controller: initial and highlight states}
+\includegraphics[width=0.95\textwidth]{c1.png}
+\includegraphics[width=0.95\textwidth]{c2.png}
+\end{figure}
+
+\begin{figure}[hl]
+\caption{Controller: tile state and error alert}
+\includegraphics[width=0.95\textwidth]{c3.png}
+\includegraphics[width=0.95\textwidth]{c4.png}
+\end{figure}
+
+\begin{figure}[hl]
+\caption{Controller: Result state}
+\includegraphics[width=0.95\textwidth]{c5.png}
+\end{figure}
 
 
 %----------------------------------------------------------------------------------------------------------------------------------------
