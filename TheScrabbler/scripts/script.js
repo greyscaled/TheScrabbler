@@ -570,29 +570,19 @@ function Controller(){
 
 		} else if (state == "highlight") {
 			if (hl_check()) {
-				state = "tiles";
 				updatePStatus(state);
 				model.createRegex();
-				window.alert("Please input your tiles");
-			
+				findBestWords();
+				getTiles();
+				if (tileCheck()) {
+					state = "result";
+					displayMatches();
+				} else {window.alert("error with tiles");}
+				
 			} else {
-				// invalid highlighting of cells
+					// invalid highlighting of cells
 				window.alert("Please select a line");
 			}
-
-		} else if (state == "tiles") {
-		    findBestWords();
-			getTiles();
-			if (tileCheck()) {
-				state = "result";
-
-			} else {window.alert("error with tiles");}
-			
-
-
-		} else if (state == "result") {
-			displayMatches();
-
 		} else { resetN(); }
 
 	}
@@ -607,16 +597,12 @@ function Controller(){
 			state = "letters";
 			updatePStatus(state);
 		
-		} else if (state == "tiles") {
+		
+		} else if (state == "result") {
 			state = "highlight";
 			updatePStatus(state);
 			model.tiles = [];
-		
-		} else if (state == "result") {
-			state = "tiles";
-			updatePStatus(state);
 			view.clearResult();
-			window.alert("Please input your tiles");
 		}
 	}
 
