@@ -36,7 +36,6 @@ function Model() {
 
 	this.hlIndicies = function () {
 		var start = findHl();
-		console.log(start);
 		var indicies = [];
 		if (start.d == "vertical") {
 			for (var i = start.y; i < ROWS; i++) {
@@ -56,7 +55,6 @@ function Model() {
 				}
 			}
 		}
-		console.log(indicies);
 		return indicies;
 	}
 
@@ -70,7 +68,6 @@ function Model() {
 		var wildcard = -1;
 		var isMatch = false;
 		var indicies = this.hlIndicies();
-		console.log("INDICIES TO SCAN " + indicies)
 		for (var i = 0; i < N; i++) {
 			if (this.heap.size() > 0) { //&& isMatch == false) {
 				tempword = this.heap.pop();
@@ -97,7 +94,6 @@ function Model() {
 						isMatch = true;
 					}
 					if (j == indicies.length - 1  && isMatch) {
-						console.log("matched word: " + tempword.word);
 						matches.push(tempword);
 					}
 				}
@@ -107,14 +103,7 @@ function Model() {
 
 	}
 
-	/* public int getResult()
-	 * Driver/Stub for now?
-	 */
-	 this.getResult = function () {
-	 	var regExp = /a\w\w\w/g; 
-	 	var results = (this.dictionary).matchesPattern(4, regExp);
-	 	return results[0].score;
-	 };
+
 
 	/* public String createRegex()
 	 *  may later be modified into char[]
@@ -345,7 +334,6 @@ function Model() {
 					word.push(this.grid[y][j]);
 				}
 			}
-			console.log(word);
 		}
 		return word.join("");
 	}
@@ -355,10 +343,6 @@ function Model() {
 		var trial = "";
 		var letlist = [];
 		var newreg = reg;
-
-		console.log("star of highlight: " + i +" "+j);
-		console.log("regex length: " + reg.length);
-		console.log("Direction: " + d);
 		var count = 0;  // for reg index
 		if (d == "vertical") {
 
@@ -387,11 +371,11 @@ function Model() {
 					}
 					temp += "]";
 					newreg[count] = temp;
+					//console.log(newreg[count] );
 				}
 				count++;
 			}
-			console.log(new RegExp(newreg.join("")+"\\b")); // testing
-			return new RegExp(newreg.join("")+"\\b");
+			return newreg;
 		
 		} else if (d == "horizontal") {
 
@@ -418,12 +402,11 @@ function Model() {
 					}
 					temp += "]";
 					newreg[count] = temp;
-					//console.log(new RegExp(newreg.join("")));
+					//console.log(newreg[count] );
 				}
 				count++;
 			}
-			console.log(new RegExp(newreg.join("")+"\\b"));
-			return new RegExp(newreg.join("")+"\\b");
+			return newreg;
 
 		}
 
