@@ -1,8 +1,9 @@
 # WebDev
 
-<h2> The Scrabbler as a single page application </h2>
+<h2> The Scrabbler as a web application </h2>
 Collaborators:
   * Greg Barkans
   * Colin Gillespie
   * Curtis Milo
+  * Mitchell Coovert
 
